@@ -32,6 +32,8 @@ import {
 	ConditionalDisplay,
 	FlexGapControls,
 	Transform,
+	getGeneratedClasses,
+	useCssGenerator
 } from '~stackable/block-components'
 import { useBlockContext, useDeviceType } from '~stackable/hooks'
 import {
@@ -39,6 +41,7 @@ import {
 	withBlockWrapperIsHovered,
 	withQueryLoopContext,
 } from '~stackable/higher-order'
+
 
 /**
  * WordPress dependencies
@@ -104,6 +107,7 @@ const Edit = props => {
 	} = props
 
 	useGeneratedCss( props.attributes )
+	useCssGenerator(attributes, <ButtonGroupStyles.Content version={ VERSION } attributes={ attributes } />);
 
 	const {
 		collapseOn = '',
@@ -155,7 +159,7 @@ const Edit = props => {
 				<>
 					<InspectorTabs />
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 
 					<BlockControls>
 						<AlignmentToolbar
@@ -217,7 +221,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv') }
 			>
 				<ButtonGroupStyles
 					version={ VERSION }

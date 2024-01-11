@@ -28,5 +28,5 @@ export const settings = {
 	example,
 	deprecated,
 	edit,
-	save,
+	save: () => null,
 }

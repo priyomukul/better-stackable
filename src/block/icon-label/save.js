@@ -23,43 +23,45 @@ import {
 import { InnerBlocks } from '@wordpress/block-editor'
 import { compose } from '@wordpress/compose'
 
-export const Save = props => {
-	const {
-		attributes, className,
-	} = props
+// export const Save = props => {
+// 	const {
+// 		attributes, className,
+// 	} = props
 
-	const rowClass = getRowClasses( attributes )
-	const blockAlignmentClass = getAlignmentClasses( attributes )
-	const responsiveClass = getResponsiveClasses( attributes )
+// 	const rowClass = getRowClasses(attributes)
+// 	const blockAlignmentClass = getAlignmentClasses(attributes)
+// 	const responsiveClass = getResponsiveClasses(attributes)
 
-	const blockClassNames = classnames( [
-		className,
-		'stk-block-icon-label',
-		responsiveClass,
-	] )
+// 	const blockClassNames = classnames([
+// 		className,
+// 		'stk-block-icon-label',
+// 		responsiveClass,
+// 	])
 
-	const contentClassNames = classnames( [
-		rowClass,
-		'stk-inner-blocks',
-		blockAlignmentClass,
-		'stk-block-content',
-	] )
+// 	const contentClassNames = classnames([
+// 		rowClass,
+// 		'stk-inner-blocks',
+// 		blockAlignmentClass,
+// 		'stk-block-content',
+// 	])
 
-	return (
-		<BlockDiv.Content
-			className={ blockClassNames }
-			attributes={ attributes }
-			version={ props.version }
-		>
-			<IconLabelStyles.Content version={ props.version } attributes={ attributes } />
-			<CustomCSS.Content attributes={ attributes } />
-			<div className={ contentClassNames }>
-				<InnerBlocks.Content />
-			</div>
-		</BlockDiv.Content>
-	)
-}
+// 	return (
+// 		<BlockDiv.Content
+// 			className={blockClassNames}
+// 			attributes={attributes}
+// 			version={props.version}
+// 		>
+// 			<IconLabelStyles.Content version={props.version} attributes={attributes} />
+// 			<CustomCSS.Content attributes={attributes} />
+// 			<div className={contentClassNames}>
+// 				<InnerBlocks.Content />
+// 			</div>
+// 		</BlockDiv.Content>
+// 	)
+// }
+
+export const Save = props => <InnerBlocks.Content />
 
 export default compose(
-	withVersion( VERSION )
-)( Save )
+	withVersion(VERSION)
+)(Save)

@@ -31,6 +31,8 @@ import {
 	getSeparatorClasses,
 	Transform,
 	getContentAlignmentClasses,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 import { useBlockContext } from '~stackable/hooks'
 import {
@@ -92,13 +94,18 @@ const Edit = props => {
 		'stk-block-content',
 	], getContentAlignmentClasses( props.attributes ) )
 
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/>)
+
 	return (
 		<>
 			{ isSelected && (
 				<>
 					<InspectorTabs />
 					<Alignment.InspectorControls hasColumnJustify={ false } hasRowAlignment={ false } />
-					<BlockDiv.InspectorControls sizeControlLayoutProps={ { hasContentVerticalAlign: false } } />
+					<BlockDiv.InspectorControls sizeControlLayoutProps={ { hasContentVerticalAlign: false } } hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -113,7 +120,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<BlockStyles
 					version={ VERSION }

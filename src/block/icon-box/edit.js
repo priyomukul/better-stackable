@@ -27,7 +27,7 @@ import {
 	Advanced,
 	MarginBottom,
 	BlockLink,
-	Transform,
+	Transform, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 import { useBlockContext } from '~stackable/hooks'
 import {
@@ -80,13 +80,15 @@ const Edit = props => {
 	const lastBlockName = last( innerBlocks )?.name
 	const renderAppender = hasInnerBlocks ? ( [ 'stackable/text', 'core/paragraph' ].includes( lastBlockName ) ? () => <></> : InnerBlocks.DefaultBlockAppender ) : InnerBlocks.ButtonBlockAppender
 
+	useCssGenerator(props.attributes, <ContainerStyles.Content attributes={props.attributes} version={VERSION}/>);
+
 	return (
 		<>
 			{ isSelected && (
 				<>
 					<InspectorTabs hasLayoutPanel={ false } />
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<BlockLink.InspectorControls />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -99,6 +101,8 @@ const Edit = props => {
 					<ContainerDiv.InspectorControls
 						sizeSelector=".stk-block-content"
 						hasContentVerticalAlign={ true }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
 					<InspectorStyleControls>
@@ -111,7 +115,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames) }
 			>
 				<ContainerStyles
 					version={ VERSION }
@@ -120,7 +124,7 @@ const Edit = props => {
 				/>
 				<CustomCSS mainBlockClass="stk-block-icon-box" />
 
-				<ContainerDiv className={ contentClassNames }>
+				<ContainerDiv className={ getGeneratedClasses( props.attributes, 'container', contentClassNames) }>
 					<InnerBlocks
 						template={ TEMPLATE }
 						templateLock={ false }

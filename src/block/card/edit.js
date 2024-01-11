@@ -39,7 +39,7 @@ import {
 	ConditionalDisplay,
 	Transform,
 	MarginBottom,
-	getBlockOrientation,
+	getBlockOrientation, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -106,7 +106,7 @@ const Edit = props => {
 
 	const imageWidthUnit = props.attributes.imageWidthUnit || 'px'
 	const imageHeightUnit = props.attributes.imageHeightUnit || 'px'
-
+	useCssGenerator(props.attributes, <CardStyles.Content version={VERSION} attributes={props.attributes}/>)
 	return (
 		<>
 			{ isSelected && (
@@ -123,10 +123,11 @@ const Edit = props => {
 						hasBorderRadius={ false }
 						hasShape={ false }
 						hasShadow={ false }
+						hasOptions={true}
 					/>
 					<Alignment.InspectorControls hasContainerSize={ true } hasBlockAlignment={ true } />
-					<BlockDiv.InspectorControls />
-					<ContainerDiv.InspectorControls sizeSelector=".stk-block-card__content" />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
+					<ContainerDiv.InspectorControls sizeSelector=".stk-block-card__content" hasOptions={true} disableColorPicker={true}/>
 					<BlockLink.InspectorControls />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -153,10 +154,10 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes,'blockDiv', blockClassNames) }
 				enableVariationPicker={ true }
 			>
-				<ContainerDiv className={ contentClassNames }>
+				<ContainerDiv className={ getGeneratedClasses(props.attributes,'container', contentClassNames) }>
 					<Image
 						showTooltips={ props.isHovered }
 						className="stk-block-card__image"
@@ -172,7 +173,7 @@ const Edit = props => {
 						heightUnit={ blockStyle !== 'horizontal' ? imageHeightUnit : '%' }
 						hasTooltip={ ! [ 'full', 'faded' ].includes( blockStyle ) }
 					/>
-					<div className={ innerClassNames }>
+					<div className={ getGeneratedClasses(props.attributes,'innerBlocks', innerClassNames) }>
 						<InnerBlocks
 							template={ TEMPLATE }
 							orientation={ blockOrientation }

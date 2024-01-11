@@ -33,12 +33,14 @@ if ( ! class_exists( 'Stackable_Google_Fonts' ) ) {
 
 		public function gather_google_fonts( $block_content, $block ) {
 			if ( $block_content === null ) {
-				return $block_content;
+				if(!empty($block['attrs'] && empty($block['attrs']['rawCss']))){
+					return $block_content;
+				}
 			}
 
 			$block_name = isset( $block['blockName'] ) ? $block['blockName'] : '';
 			if ( $this->is_stackable_block( $block_name ) && is_array( $block['attrs'] ) ) {
-				if ( stripos( $block_content, 'family' ) !== false ) {
+				if ($this->hasFontFamily($block_content, $block)) {
 					foreach ( $block['attrs'] as $attr_name => $font_name ) {
 						if ( str_ends_with( strtolower( $attr_name ), 'fontfamily' ) ) {
 							self::register_font( $font_name );
@@ -48,6 +50,16 @@ if ( ! class_exists( 'Stackable_Google_Fonts' ) ) {
 			}
 
 			return $block_content;
+		}
+
+		private function hasFontFamily($block_content, $block ) {
+			if(stripos( $block_content, 'family' ) !== false ){
+				return true;
+			}
+			if(!empty($block['attrs']['rawCss']) && stripos( $block['attrs']['rawCss'], 'family' ) !== false ){
+				return true;
+			}
+			return false;
 		}
 
 		public static function enqueue_frontend_block_fonts() {

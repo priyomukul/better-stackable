@@ -8,7 +8,6 @@ import { HeadingStyles } from './style'
  */
 import {
 	BlockDiv,
-	useGeneratedCss,
 	CustomCSS,
 	Responsive,
 	Advanced,
@@ -22,6 +21,9 @@ import {
 	ConditionalDisplay,
 	Transform,
 	useUniqueId,
+	useGeneratedCss,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 import { version as VERSION, i18n } from 'stackable'
 import classnames from 'classnames'
@@ -34,7 +36,7 @@ import {
 	AdvancedRangeControl,
 	AlignButtonsControl,
 } from '~stackable/components'
-import { useBlockContext } from '~stackable/hooks'
+import { useBlockContext, useDeviceType } from '~stackable/hooks'
 import { createBlockCompleter } from '~stackable/util'
 import {
 	withBlockAttributeContext,
@@ -57,12 +59,12 @@ import { addFilter, applyFilters } from '@wordpress/hooks'
  *
  * @see ~stackable/util/blocks#createBlockCompleter
  */
-addFilter( 'editor.Autocomplete.completers', 'stackable/heading', ( filteredCompleters, name ) => {
-	if ( name === 'stackable/heading' ) {
-		return [ ...filteredCompleters, createBlockCompleter() ]
+addFilter('editor.Autocomplete.completers', 'stackable/heading', (filteredCompleters, name) => {
+	if (name === 'stackable/heading') {
+		return [...filteredCompleters, createBlockCompleter()]
 	}
 	return filteredCompleters
-} )
+})
 
 const Edit = props => {
 	const {
@@ -76,102 +78,105 @@ const Edit = props => {
 		isSelected,
 	} = props
 
-	useGeneratedCss( props.attributes )
+	useGeneratedCss(props.attributes)
 
 	const { parentBlock } = useBlockContext()
-	const textClasses = getTypographyClasses( props.attributes )
-	const blockAlignmentClass = getAlignmentClasses( props.attributes )
-	const blockClassNames = classnames( [
+	const textClasses = getTypographyClasses(props.attributes)
+	const blockAlignmentClass = getAlignmentClasses(props.attributes)
+	const blockClassNames = classnames([
 		className,
 		'stk-block-heading',
 		'stk-block-heading--v2',
-	] )
+	])
 
-	const textClassNames = classnames( [
+	const textClassNames = classnames([
 		'stk-block-heading__text',
 		textClasses,
 		blockAlignmentClass,
 	], {
 		'stk-block-heading--use-theme-margins': attributes.useThemeTextMargins,
-	} )
+	})
 
-	useUniqueId( attributes, true )
+	useUniqueId(attributes, true)
 
 	// Auto-generate anchors in Stackable headings.
-	const [ prevText, setPrevText ] = useState( props.attributes.text )
+	const [prevText, setPrevText] = useState(props.attributes.text)
 
-	useEffect( () => {
-		const cleanAnchorValue = kebabCase( props.attributes.anchor )
-		if ( cleanAnchorValue === kebabCase( prevText ) || ! props.attributes.anchor ) {
-			dispatch( 'core/block-editor' ).__unstableMarkNextChangeAsNotPersistent()
-			setAttributes( { anchor: kebabCase( props.attributes.text ) } )
+	useEffect(() => {
+		const cleanAnchorValue = kebabCase(props.attributes.anchor)
+		if (cleanAnchorValue === kebabCase(prevText) || !props.attributes.anchor) {
+			dispatch('core/block-editor').__unstableMarkNextChangeAsNotPersistent()
+			setAttributes({ anchor: kebabCase(props.attributes.text) })
 		}
-		setPrevText( props.attributes.text )
-	}, [ props.attributes.anchor, props.attributes.text ] )
+		setPrevText(props.attributes.text)
+	}, [props.attributes.anchor, props.attributes.text])
 
-	const onSplit = ( value, isOriginal ) => {
+	const onSplit = (value, isOriginal) => {
 		let block
 
-		if ( isOriginal || value ) {
-			block = createBlock( 'stackable/heading', {
+		if (isOriginal || value) {
+			block = createBlock('stackable/heading', {
 				...attributes,
 				text: value,
-			} )
+			})
 		} else {
-			block = createBlock( 'stackable/text' )
+			block = createBlock('stackable/text')
 		}
 
-		if ( isOriginal ) {
+		if (isOriginal) {
 			block.clientId = clientId
 		}
 
 		return block
 	}
-
+	useCssGenerator(attributes, <HeadingStyles.Content version={VERSION} attributes={attributes} />);
 	return (
 		<>
-			{ isSelected && (
+			{isSelected && (
 				<>
 					<InspectorTabs />
 
 					<Typography.InspectorControls
-						{ ...props }
-						hasRemoveMargins={ true }
-						initialOpen={ true }
-						hasTextShadow={ true }
+						{...props}
+						hasRemoveMargins={true}
+						initialOpen={true}
+						hasTextShadow={true}
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
-					<Alignment.InspectorControls labelContentAlign={ sprintf( __( '%s Alignment', i18n ), __( 'Text', i18n ) ) } />
-					<BlockDiv.InspectorControls />
+					<Alignment.InspectorControls labelContentAlign={sprintf(__('%s Alignment', i18n), __('Text', i18n))} />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 
-					{ !! applyFilters( 'stackable.heading.edit.top-bottom-line.enable-handlers', true, parentBlock ) && (
+					{!!applyFilters('stackable.heading.edit.top-bottom-line.enable-handlers', true, parentBlock) && (
 						<InspectorStyleControls>
 							<PanelAdvancedSettings
-								title={ __( 'Top Line', i18n ) }
+								title={__('Top Line', i18n)}
 								id="top-line"
-								hasToggle={ true }
-								checked={ props.attributes.showTopLine }
-								onChange={ value => setAttributes( { showTopLine: value } ) }
+								hasToggle={true}
+								checked={props.attributes.showTopLine}
+								onChange={value => setAttributes({ showTopLine: value })}
 							>
 								<ColorPaletteControl
-									label={ __( 'Line Color', i18n ) }
+									label={__('Line Color', i18n)}
 									attribute="topLineColor"
 									hover="all"
+									disableColorPicker={true}
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Width', i18n ) }
-									units={ [ 'px', '%', 'vw' ] }
+									label={__('Width', i18n)}
+									units={['px', '%', 'vw']}
 									attribute="topLineWidth"
 									min="0"
-									sliderMax={ [ 200, 100 ] }
+									sliderMax={[200, 100]}
 									hover="all"
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Height', i18n ) }
+									label={__('Height', i18n)}
 									attribute="topLineHeight"
 									min="0"
 									sliderMax="20"
@@ -179,7 +184,7 @@ const Edit = props => {
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Margin', i18n ) }
+									label={__('Margin', i18n)}
 									attribute="topLineMargin"
 									responsive="all"
 									sliderMin="0"
@@ -187,37 +192,38 @@ const Edit = props => {
 								/>
 
 								<AlignButtonsControl
-									label={ __( 'Align', i18n ) }
+									label={__('Align', i18n)}
 									attribute="topLineAlign"
 									responsive="all"
 								/>
 
 							</PanelAdvancedSettings>
 							<PanelAdvancedSettings
-								title={ __( 'Bottom Line', i18n ) }
+								title={__('Bottom Line', i18n)}
 								id="bottom-line"
-								hasToggle={ true }
-								checked={ props.attributes.showBottomLine }
-								onChange={ value => setAttributes( { showBottomLine: value } ) }
+								hasToggle={true}
+								checked={props.attributes.showBottomLine}
+								onChange={value => setAttributes({ showBottomLine: value })}
 							>
 
 								<ColorPaletteControl
-									label={ __( 'Line Color', i18n ) }
+									label={__('Line Color', i18n)}
 									attribute="bottomLineColor"
 									hover="all"
+									disableColorPicker={true}
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Width', i18n ) }
-									units={ [ 'px', '%', 'vw' ] }
+									label={__('Width', i18n)}
+									units={['px', '%', 'vw']}
 									attribute="bottomLineWidth"
-									min={ 0 }
-									sliderMax={ [ 200, 100 ] }
+									min={0}
+									sliderMax={[200, 100]}
 									hover="all"
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Height', i18n ) }
+									label={__('Height', i18n)}
 									attribute="bottomLineHeight"
 									min="0"
 									sliderMax="20"
@@ -225,7 +231,7 @@ const Edit = props => {
 								/>
 
 								<AdvancedRangeControl
-									label={ __( 'Margin', i18n ) }
+									label={__('Margin', i18n)}
 									attribute="bottomLineMargin"
 									responsive="all"
 									sliderMin="0"
@@ -233,14 +239,14 @@ const Edit = props => {
 								/>
 
 								<AlignButtonsControl
-									label={ __( 'Align', i18n ) }
+									label={__('Align', i18n)}
 									attribute="bottomLineAlign"
 									responsive="all"
 								/>
 
 							</PanelAdvancedSettings>
 						</InspectorStyleControls>
-					) }
+					)}
 
 					<EffectsAnimations.InspectorControls />
 					<CustomAttributes.InspectorControls />
@@ -248,34 +254,34 @@ const Edit = props => {
 					<Responsive.InspectorControls />
 					<ConditionalDisplay.InspectorControls />
 				</>
-			) }
+			)}
 
 			<HeadingStyles
-				version={ VERSION }
-				blockState={ props.blockState }
-				clientId={ clientId }
+				version={VERSION}
+				blockState={props.blockState}
+				clientId={clientId}
 			/>
 			<CustomCSS mainBlockClass="stk-block-heading" />
 
 			<BlockDiv
-				blockHoverClass={ props.blockHoverClass }
-				clientId={ props.clientId }
-				attributes={ props.attributes }
-				className={ blockClassNames }
+				blockHoverClass={props.blockHoverClass}
+				clientId={props.clientId}
+				attributes={props.attributes}
+				className={blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv')}
 			>
-				{ props.attributes.showTopLine && <div className="stk-block-heading__top-line" /> }
+				{props.attributes.showTopLine && <div className="stk-block-heading__top-line" />}
 				<Typography
 					defaultTag="h2"
-					placeholder={ __( 'Add heading text here', i18n ) }
-					className={ textClassNames }
-					onMerge={ mergeBlocks }
-					onRemove={ onRemove }
-					onReplace={ onReplace }
-					onSplit={ onSplit }
+					placeholder={__('Add heading text here', i18n)}
+					className={textClassNames + ' ' + getGeneratedClasses(attributes, 'element')}
+					onMerge={mergeBlocks}
+					onRemove={onRemove}
+					onReplace={onReplace}
+					onSplit={onSplit}
 				/>
-				{ props.attributes.showBottomLine && <div className="stk-block-heading__bottom-line" /> }
+				{props.attributes.showBottomLine && <div className="stk-block-heading__bottom-line" />}
 			</BlockDiv>
-			{ props.isHovered && <MarginBottom /> }
+			{props.isHovered && <MarginBottom />}
 		</>
 	)
 }
@@ -284,4 +290,4 @@ export default compose(
 	withBlockWrapperIsHovered,
 	withQueryLoopContext,
 	withBlockAttributeContext,
-)( Edit )
+)(Edit)

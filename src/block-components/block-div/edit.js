@@ -30,10 +30,11 @@ export const Edit = props => {
 	const {
 		hasSizeSpacing,
 		initialOpen,
+		hasOptions,
+		disableColorPicker
 	} = props
 	const hasBackground = useBlockAttributesContext( attributes => attributes.hasBackground )
 	const setAttributes = useBlockSetAttributesContext()
-
 	return (
 		<>
 			<InspectorBlockControls>
@@ -56,6 +57,7 @@ export const Edit = props => {
 							visualGuide={ {
 								highlight: 'padding',
 							} }
+							hasOptions={hasOptions}
 						/>
 					</PanelAdvancedSettings>
 				) }
@@ -78,6 +80,8 @@ export const Edit = props => {
 				>
 					<BorderControls
 						attrNameTemplate="block%s"
+						hasOptions={hasOptions}
+						disableColorPicker={disableColorPicker}
 					/>
 				</PanelAdvancedSettings>
 			</InspectorStyleControls>
@@ -89,4 +93,5 @@ Edit.defaultProps = {
 	hasSizeSpacing: true,
 	initialOpen: false,
 	sizeControlLayoutProps: {},
+	hasOptions: false
 }

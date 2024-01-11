@@ -53,7 +53,34 @@ export const attributes = ( version = VERSION ) => {
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	} );
+
+	attrObject.add({
+		attributes: {
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					fontSize: {
+						type: 'element',
+					},
+					shapeBorderRadius2: {
+						type: 'shape',
+					},
+				},
+			},
+		},
+		versionAdded: '3.5.0',
+		versionDeprecated:''
+	});
 
 	return attrObject.getMerged( version )
 }

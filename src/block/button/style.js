@@ -22,7 +22,7 @@ const buttonOptions = {
 }
 
 const typographyOptions = {
-	selector: '.stk-button__inner-text',
+	selector: '.stk-button .stk-button__inner-text',
 	hoverSelector: '.stk-button:hover .stk-button__inner-text',
 }
 

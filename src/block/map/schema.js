@@ -88,6 +88,15 @@ export const mapAttributes = {
 		type: 'number',
 		default: '',
 	},
+
+	generatedClasses: {
+		type: 'object',
+		default: {
+			blockBorderRadius2: {
+				type: 'blockDiv'
+			}
+		},
+	}
 }
 
 export const attributes = ( version = VERSION ) => {

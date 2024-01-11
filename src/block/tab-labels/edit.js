@@ -28,6 +28,8 @@ import {
 	Transform,
 	Icon,
 	Button,
+	getGeneratedClasses,
+	useCssGenerator,
 } from '~stackable/block-components'
 import { i18n, version as VERSION } from 'stackable'
 import classnames from 'classnames'
@@ -290,6 +292,11 @@ const Edit = props => {
 		blockAlignmentClass,
 	] )
 
+	useCssGenerator( props.attributes, <TabStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -467,11 +474,13 @@ const Edit = props => {
 								hasTextColor={ false }
 								hasIconColor={ false }
 								attrNameTemplate="tab%s"
+								disableColorPicker={true}
 							/>
 							<ColorPaletteControl
 								label={ __( 'Text Color', i18n ) }
 								attribute="tabTextColor1"
 								hover="all"
+								disableColorPicker={true}
 							/>
 							{ props.attributes.showIcon &&
 								<ColorPaletteControl
@@ -479,15 +488,19 @@ const Edit = props => {
 									// We need this name because the Button Block Component uses this.
 									attribute="tabIconColor1"
 									hover="all"
+									disableColorPicker={true}
 								/>
 							}
 							<ControlSeparator />
 							<Button.InspectorControls.Size.Controls
 								attrNameTemplate="tab%s"
+								hasOptions={true}
 							/>
 							<ControlSeparator />
 							<Button.InspectorControls.Borders.Controls
 								attrNameTemplate="tab%s"
+								hasOptions={true}
+								disableColorPicker={true}
 							/>
 						</PanelAdvancedSettings>
 
@@ -499,11 +512,13 @@ const Edit = props => {
 								hasTextColor={ false }
 								hasIconColor={ false }
 								attrNameTemplate="activeTab%s"
+								disableColorPicker={true}
 							/>
 							<ColorPaletteControl
 								label={ __( 'Text Color', i18n ) }
 								attribute="activeTabTextColor"
 								hover="all"
+								disableColorPicker={true}
 							/>
 							{ props.attributes.showIcon &&
 								<ColorPaletteControl
@@ -511,6 +526,7 @@ const Edit = props => {
 									// We need this name because the Button Block Component uses this.
 									attribute="activeTabIconColor1"
 									hover="all"
+									disableColorPicker={true}
 								/>
 							}
 							<ControlSeparator />
@@ -528,6 +544,7 @@ const Edit = props => {
 							id="typography"
 						>
 							<Typography.InspectorControls.Controls
+								disableColorPicker={true}
 								attrNameTemplate="tab%s"
 								{ ...props }
 								hasTextContent={ false }
@@ -537,6 +554,7 @@ const Edit = props => {
 								hasTextShadow={ true }
 								hasGradient={ false }
 								hasInset={ false }
+								hasOptions={true}
 							/>
 						</PanelAdvancedSettings>
 
@@ -549,6 +567,7 @@ const Edit = props => {
 							id="icon"
 						>
 							<Icon.InspectorControls
+								disableColorPicker={true}
 								attrNameTemplate="tab%s"
 								wrapInPanels={ false }
 								hasGradient={ false }
@@ -582,7 +601,7 @@ const Edit = props => {
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 
@@ -605,7 +624,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<div className="stk-block-tab-labels__wrapper">
 					{ props.attributes.tabLabels.map( ( tab, index ) => {
@@ -614,7 +633,7 @@ const Edit = props => {
 							<button
 								className={ classnames( 'stk-block-tabs__tab', {
 									'stk-block-tabs__tab--active': activeTab === index + 1,
-								} ) }
+								}, getGeneratedClasses( props.attributes, 'button' ) ) }
 								aria-selected={ activeTab === index + 1 ? 'true' : 'false' }
 								key={ index }
 								onClick={ () => onClick( index + 1 ) }

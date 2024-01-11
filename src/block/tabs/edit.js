@@ -36,6 +36,8 @@ import {
 	ContentAlign,
 	getContentAlignmentClasses,
 	ColumnsControl,
+	getGeneratedClasses,
+	useCssGenerator
 } from '~stackable/block-components'
 import { InnerBlocks } from '@wordpress/block-editor'
 import { useBlockContext } from '~stackable/hooks'
@@ -118,6 +120,11 @@ const Edit = props => {
 			'stk-block-tabs--immediate': props.attributes.tabPanelEffect === 'immediate',
 		},
 	], getContentAlignmentClasses( props.attributes ) )
+
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={ VERSION }
+		attributes={ props.attributes }
+	/> );
 
 	return (
 		<>
@@ -226,7 +233,7 @@ const Edit = props => {
 					</InspectorLayoutControls>
 					<ContentAlign.InspectorControls />
 					{ /* <Alignment.InspectorControls hasColumnJustify={ true } hasRowAlignment={ true } /> */ }
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -241,7 +248,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<BlockStyles
 					version={ VERSION }

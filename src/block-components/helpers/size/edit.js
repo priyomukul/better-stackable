@@ -13,6 +13,8 @@ import { useAttributeEditHandlers, useDeviceType } from '~stackable/hooks'
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n'
+import ConditionalControl from "~stackable/components/conditional-control";
+import {MARGINS, PADDINGS} from "~stackable/config/constants";
 
 const Layout = props => {
 	const deviceType = useDeviceType()
@@ -116,6 +118,7 @@ Layout.defaultProps = {
 const Spacing = props => {
 	const {
 		getAttrName,
+		getAttributes
 	} = useAttributeEditHandlers( props.attrNameTemplate )
 
 	const {
@@ -135,39 +138,56 @@ const Spacing = props => {
 
 	return (
 		<>
-			<FourRangeControl
-				label={ labelPaddings }
-				attribute={ getAttrName( 'padding' ) }
-				responsive="all"
-				hover="all"
-				units={ [ 'px', 'em', '%' ] }
-				defaultLocked={ true }
-				min={ [ 0, 0, 0 ] }
-				sliderMax={ [ 200, 30, 100 ] }
-				helpTooltip={ {
-					video: 'inner-block-padding',
-					description: __( 'Sets the block paddings, i.e the space between the inner columns and the block border', i18n ),
-				} }
-				visualGuide={ paddingVisualGuide }
-				placeholder={ props.paddingPlaceholder }
-			/>
-
-			{ props.enableMargin &&
+			<ConditionalControl
+				label={__('Paddings', i18n)}
+				isEnabled={props.hasOptions}
+				attributeName={getAttrName( 'padding' )}
+				saveAttr={getAttributes().generatedClasses}
+				saveAttrName={'generatedClasses'}
+				options={PADDINGS}
+			>
 				<FourRangeControl
-					label={ labelMargins }
-					attribute={ getAttrName( 'margin' ) }
+					label={ labelPaddings }
+					attribute={ getAttrName( 'padding' ) }
 					responsive="all"
-					units={ [ 'px', '%' ] }
-					defaultLocked={ false }
-					sliderMin={ [ -200, -100 ] }
-					sliderMax={ [ 200, 100 ] }
-					placeholder="0"
+					hover="all"
+					units={ [ 'px', 'em', '%' ] }
+					defaultLocked={ true }
+					min={ [ 0, 0, 0 ] }
+					sliderMax={ [ 200, 30, 100 ] }
 					helpTooltip={ {
-						video: 'advanced-block-margin',
-						description: __( 'Sets the block margin, i.e. the space outside the block between the block border and the next block.', i18n ),
+						video: 'inner-block-padding',
+						description: __( 'Sets the block paddings, i.e the space between the inner columns and the block border', i18n ),
 					} }
-					visualGuide={ marginVisualGuide }
+					visualGuide={ paddingVisualGuide }
+					placeholder={ props.paddingPlaceholder }
 				/>
+			</ConditionalControl>
+			{ props.enableMargin &&
+				<ConditionalControl
+					label={__('Margins', i18n)}
+					isEnabled={props.hasOptions}
+					attributeName={getAttrName( 'margin' )}
+					saveAttr={getAttributes().generatedClasses}
+					saveAttrName={'generatedClasses'}
+					options={MARGINS}
+				>
+					<FourRangeControl
+						label={ labelMargins }
+						attribute={ getAttrName( 'margin' ) }
+						responsive="all"
+						units={ [ 'px', '%' ] }
+						defaultLocked={ false }
+						sliderMin={ [ -200, -100 ] }
+						sliderMax={ [ 200, 100 ] }
+						placeholder="0"
+						helpTooltip={ {
+							video: 'advanced-block-margin',
+							description: __( 'Sets the block margin, i.e. the space outside the block between the block border and the next block.', i18n ),
+						} }
+						visualGuide={ marginVisualGuide }
+					/>
+				</ConditionalControl>
 			}
 		</>
 	)
@@ -179,6 +199,7 @@ Spacing.defaultProps = {
 	enableMargin: true,
 	visualGuide: null,
 	labels: {},
+	hasOptions: false,
 }
 export const SizeControls = {
 	Layout,

@@ -1,0 +1,17 @@
+:root{
+	--font-sm: 0.875rem;
+	--font-base: 1rem;
+	--font-lg: 1.25rem;
+	--font-xl: 1.5rem;
+	--font-2xl: 2rem;
+}
+html{
+	font-size: 16px;
+}
+
+.stk-container[class*='stl-rounded'],
+.stk-block[class*='stl-rounded'] {
+	overflow: hidden !important;
+}
+
+@tailwind utilities;

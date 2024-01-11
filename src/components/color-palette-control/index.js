@@ -31,6 +31,7 @@ import { applyFilters, addFilter } from '@wordpress/hooks'
 import { cloneDeep } from 'lodash'
 import { i18n } from 'stackable'
 import classnames from 'classnames'
+import { DEFAULT_COLORS } from "~stackable/config/constants";
 
 const popoverProps = {
 	placement: 'left-start',
@@ -84,58 +85,62 @@ const ColorPaletteControl = memo( props => {
 	const {
 		label,
 		className = '',
+		disableColorPicker
 	} = props
-	const [ _value, _onChange ] = useControlHandlers( props.attribute, props.responsive, props.hover, props.valueCallback, props.changeCallback )
-	const [ _propsToPass, controlProps ] = extractControlProps( props )
+
+	const [_value, _onChange] = useControlHandlers(props.attribute, props.responsive, props.hover, props.valueCallback, props.changeCallback)
+	const [_propsToPass, controlProps] = extractControlProps(props)
 
 	const {
+		stackableColors,
+		stackableGradients,
 		hideThemeColors,
 		hideDefaultColors,
 		hideSiteEditorColors,
-	} = useSelect( 'stackable/global-colors' ).getSettings()
+	} = useSelect('stackable/global-colors').getSettings()
 
 	let { colors, gradients } = applyFilters( 'stackable.color-palette-control.colors', useMultipleOriginColorsAndGradients() )
-
+	
 	// Filter the colors.
-	colors = colors.filter( group => {
+	colors = colors.filter(group => {
 		// Since there are no identifying properties for the groups, we'll just use the same names used in Gutenberg.
-		if ( hideThemeColors && group.name === _x( 'Theme', 'Indicates this palette comes from the theme.' ) ) {
+		if (hideThemeColors && group.name === _x('Theme', 'Indicates this palette comes from the theme.')) {
 			return false
 		}
 
-		if ( hideDefaultColors && group.name === _x( 'Default', 'Indicates this palette comes from WordPress.' ) ) {
+		if (hideDefaultColors && group.name === _x('Default', 'Indicates this palette comes from WordPress.')) {
 			return false
 		}
 
-		if ( hideSiteEditorColors && group.name === _x( 'Custom', 'Indicates this palette comes from the theme.' ) ) {
+		if (hideSiteEditorColors && group.name === _x('Custom', 'Indicates this palette comes from the theme.')) {
 			return false
 		}
 
 		return true
-	} )
-	gradients = gradients.filter( group => {
+	})
+	gradients = gradients.filter(group => {
 		// Since there are no identifying properties for the groups, we'll just use the same names used in Gutenberg.
-		if ( hideThemeColors && group.name === _x( 'Theme', 'Indicates this palette comes from the theme.' ) ) {
+		if (hideThemeColors && group.name === _x('Theme', 'Indicates this palette comes from the theme.')) {
 			return false
 		}
 
-		if ( hideDefaultColors && group.name === _x( 'Default', 'Indicates this palette comes from WordPress.' ) ) {
+		if (hideDefaultColors && group.name === _x('Default', 'Indicates this palette comes from WordPress.')) {
 			return false
 		}
 
-		if ( hideSiteEditorColors && group.name === _x( 'Custom', 'Indicates this palette comes from the theme.' ) ) {
+		if (hideSiteEditorColors && group.name === _x('Custom', 'Indicates this palette comes from the theme.')) {
 			return false
 		}
 
 		return true
-	} )
+	})
 
-	const allColors = ( [ ...colors, ...gradients ] ).reduce( ( colors, group ) => {
+	const allColors = ([...colors, ...gradients]).reduce((colors, group) => {
 		return [
 			...colors,
-			...( group.colors || group.gradients ),
+			...(group.colors || group.gradients),
 		]
-	}, [] )
+	}, [])
 
 	let value = typeof props.value === 'undefined' ? _value : props.value
 	const onChange = typeof props.onChange === 'undefined' ? _onChange : props.onChange
@@ -144,16 +149,16 @@ const ColorPaletteControl = memo( props => {
 
 	let colorLabel,
 		colorName = value
-	allColors.some( color => {
-		if ( color.color === value || color.gradient === value ) {
+	allColors.some(color => {
+		if (color.color === value || color.gradient === value) {
 			colorName = color.name
 			colorLabel = color.name
 			return true
 		}
 		return false
-	} )
+	})
 
-	colorLabel = colorName || ( value === 'transparent' ? 'Transparent' : value )
+	colorLabel = colorName || (value === 'transparent' ? 'Transparent' : value)
 
 	const toggleSettings = {
 		colorValue: value,
@@ -162,42 +167,43 @@ const ColorPaletteControl = memo( props => {
 
 	const colorPalette = (
 		<ColorPalettePopup
-			value={ value }
-			onChange={ onChange }
-			preOnChange={ props.preOnChange }
-			colors={ props.isGradient ? gradients : colors }
-			isGradient={ props.isGradient }
+			value={value}
+			onChange={onChange}
+			preOnChange={props.preOnChange}
+			colors={props.isGradient ? gradients : colors}
+			isGradient={props.isGradient}
+			disableColorPicker={disableColorPicker}
 		/>
 	)
 
 	return (
 		<AdvancedControl
-			{ ...controlProps }
-			className={ classnames( [ className, 'editor-color-palette-control', 'stk-color-palette-control' ] ) }
-			label={ label }
+			{...controlProps}
+			className={classnames([className, 'editor-color-palette-control', 'stk-color-palette-control'])}
+			label={label}
 		>
-			{ props.isExpanded && colorPalette }
-			{ ! props.isExpanded && (
+			{props.isExpanded && colorPalette}
+			{!props.isExpanded && (
 				<Dropdown
-					popoverProps={ popoverProps }
+					popoverProps={popoverProps}
 					className="block-editor-tools-panel-color-gradient-settings__dropdown"
-					renderToggle={ renderToggle( toggleSettings ) }
-					renderContent={ () => (
+					renderToggle={renderToggle(toggleSettings)}
+					renderContent={() => (
 						<div className="stk-color-palette-control__popover-content">
-							{ colorPalette }
+							{colorPalette}
 						</div>
-					) }
+					)}
 				/>
-			) }
+			)}
 			<ResetButton
-				allowReset={ props.allowReset }
-				value={ value }
-				default={ props.default }
-				onChange={ onChange }
+				allowReset={props.allowReset}
+				value={value}
+				default={props.default}
+				onChange={onChange}
 			/>
 		</AdvancedControl>
 	)
-} )
+})
 
 ColorPaletteControl.defaultProps = {
 	allowReset: true,
@@ -210,13 +216,14 @@ ColorPaletteControl.defaultProps = {
 	preOnChange: PASSTHRUOP,
 	isExpanded: false,
 	isGradient: false,
+	disableColorPicker: false
 }
 
 export default ColorPaletteControl
 
 const renderToggle =
 	settings =>
-		( { onToggle, isOpen } ) => {
+		({ onToggle, isOpen }) => {
 			const { colorValue, label } = settings
 
 			const toggleProps = {
@@ -229,26 +236,26 @@ const renderToggle =
 			}
 
 			return (
-				<Button { ...toggleProps }>
+				<Button {...toggleProps}>
 					<LabeledColorIndicator
-						colorValue={ colorValue }
-						label={ label }
+						colorValue={colorValue}
+						label={label}
 					/>
 				</Button>
 			)
 		}
 
-const LabeledColorIndicator = ( { colorValue, label } ) => (
+const LabeledColorIndicator = ({ colorValue, label }) => (
 	<HStack justify="flex-start">
 		<ColorIndicator
 			className="stk-color-indicator block-editor-panel-color-gradient-settings__color-indicator"
-			colorValue={ colorValue }
+			colorValue={colorValue}
 		/>
 		<FlexItem
 			className="stk-color-name block-editor-panel-color-gradient-settings__color-name"
-			title={ label }
+			title={label}
 		>
-			{ label }
+			{label}
 		</FlexItem>
 	</HStack>
 )

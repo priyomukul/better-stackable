@@ -24,6 +24,8 @@ import {
 	ConditionalDisplay,
 	MarginBottom,
 	Transform,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 import {
 	withBlockAttributeContext, withBlockWrapperIsHovered, withQueryLoopContext,
@@ -84,6 +86,11 @@ const Edit = props => {
 		'stk-block-content',
 	] )
 
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -91,7 +98,7 @@ const Edit = props => {
 					<InspectorTabs />
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -119,7 +126,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<div className={ contentClassNames }>
 					<InnerBlocks

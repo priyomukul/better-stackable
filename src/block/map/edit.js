@@ -38,6 +38,8 @@ import {
 	MarginBottom,
 	Transform,
 	getAlignmentClasses,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 import {
 	withBlockAttributeContext, withBlockWrapperIsHovered, withQueryLoopContext,
@@ -259,6 +261,11 @@ const Edit = props => {
 		}
 	}, 400 ), [ geocoderRef.current, setAttributes, useGeocoding ] )
 
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/> )
+
 	return (
 		<>
 			{ isSelected && (
@@ -438,6 +445,7 @@ const Edit = props => {
 										placeholder: DEFAULT_ICON_SIZE,
 									} }
 									iconControlHelp={ __( 'Uploaded Icon and Icon Color settings are not fully compatible.', i18n ) }
+									disableColorPicker={true}
 								/>
 							</div>
 							{ icon && <AdvancedRangeControl
@@ -463,7 +471,7 @@ const Edit = props => {
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
 
-					<BlockDiv.InspectorControls hasSizeSpacing={ false } />
+					<BlockDiv.InspectorControls hasSizeSpacing={ false } hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -485,7 +493,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<ResizableBox
 					ref={ resizableRef }

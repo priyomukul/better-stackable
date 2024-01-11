@@ -28,6 +28,8 @@ import {
 	EffectsAnimations,
 	ConditionalDisplay,
 	Transform,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 import {
 	withBlockAttributeContext, withBlockWrapperIsHovered, withQueryLoopContext,
@@ -43,10 +45,10 @@ import { __ } from '@wordpress/i18n'
 import { addFilter } from '@wordpress/hooks'
 
 export const TEMPLATE = [
-	[ 'stackable/icon', { contentAlign: 'left' } ],
-	[ 'stackable/heading', {
-		text: __( 'Icon Label', i18n ), hasP: true, textTag: 'h4',
-	} ],
+	['stackable/icon', { contentAlign: 'left' }],
+	['stackable/heading', {
+		text: __('Icon Label', i18n), hasP: true, textTag: 'h4',
+	}],
 ]
 
 const Edit = props => {
@@ -57,47 +59,49 @@ const Edit = props => {
 		isSelected,
 	} = props
 
-	useGeneratedCss( props.attributes )
+	useGeneratedCss(props.attributes)
 
-	const rowClass = getRowClasses( attributes )
-	const blockAlignmentClass = getAlignmentClasses( attributes )
+	const rowClass = getRowClasses(attributes)
+	const blockAlignmentClass = getAlignmentClasses(attributes)
 
-	const blockClassNames = classnames( [
+	const blockClassNames = classnames([
 		className,
 		'stk-block-icon-label',
 		rowClass,
-	] )
+	])
 
-	const contentClassNames = classnames( [
+	const contentClassNames = classnames([
 		'stk-inner-blocks',
 		blockAlignmentClass,
 		'stk-block-content',
-	] )
+	])
+
+	useCssGenerator(attributes, <IconLabelStyles.Content version={VERSION} attributes={attributes} />);
 
 	return (
 		<>
-			{ isSelected && (
+			{isSelected && (
 				<>
-					<InspectorTabs hasLayoutPanel={ false } />
+					<InspectorTabs hasLayoutPanel={false} />
 
 					<InspectorStyleControls>
 						<PanelAdvancedSettings
-							title={ __( 'General', i18n ) }
+							title={__('General', i18n)}
 							id="general"
-							initialOpen={ true }
+							initialOpen={true}
 						>
 							<AdvancedRangeControl
-								label={ __( 'Icon Gap', i18n ) }
+								label={__('Icon Gap', i18n)}
 								attribute="iconGap"
 								responsive="all"
-								min={ 0 }
-								sliderMax={ 300 }
+								min={0}
+								sliderMax={300}
 								placeholder="64"
 							/>
 						</PanelAdvancedSettings>
 
 					</InspectorStyleControls>
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -110,32 +114,32 @@ const Edit = props => {
 						<InspectorBottomTip />
 					</InspectorStyleControls>
 				</>
-			) }
+			)}
 
 			<IconLabelStyles
-				version={ VERSION }
-				blockState={ props.blockState }
-				clientId={ clientId }
+				version={VERSION}
+				blockState={props.blockState}
+				clientId={clientId}
 			/>
 			<CustomCSS mainBlockClass="stk-block-icon-label" />
 
 			<BlockDiv
-				blockHoverClass={ props.blockHoverClass }
-				clientId={ props.clientId }
-				attributes={ props.attributes }
-				className={ blockClassNames }
+				blockHoverClass={props.blockHoverClass}
+				clientId={props.clientId}
+				attributes={props.attributes}
+				className={blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv')}
 			>
-				<div className={ contentClassNames }>
+				<div className={contentClassNames}>
 					<InnerBlocks
 						orientation="horizontal"
-						template={ TEMPLATE }
+						template={TEMPLATE}
 						templateLock="insert"
-						templateInsertUpdatesSelection={ true }
+						templateInsertUpdatesSelection={true}
 					/>
 				</div>
 			</BlockDiv>
-			{ /* Hack, somehow the icon list doesn't have a uniqueId when it's just added, so the data-block-id isn't populated and isn't detected, this fixes that. */ }
-			{ props.isHovered && <MarginBottom previewSelector={ `[data-block="${ clientId }"] > .stk-block` } /> }
+			{ /* Hack, somehow the icon list doesn't have a uniqueId when it's just added, so the data-block-id isn't populated and isn't detected, this fixes that. */}
+			{props.isHovered && <MarginBottom previewSelector={`[data-block="${clientId}"] > .stk-block`} />}
 		</>
 	)
 }
@@ -144,14 +148,14 @@ export default compose(
 	withBlockWrapperIsHovered,
 	withQueryLoopContext,
 	withBlockAttributeContext,
-)( Edit )
+)(Edit)
 
 // Disable bottom margins for child blocks.
-addFilter( 'stackable.edit.margin-bottom.enable-handlers', 'stackable/icon-label', ( enabled, parentBlock ) => {
+addFilter('stackable.edit.margin-bottom.enable-handlers', 'stackable/icon-label', (enabled, parentBlock) => {
 	return parentBlock?.name === 'stackable/icon-label' ? false : enabled
-} )
+})
 
 // Disable top and bottom line of heading block.
-addFilter( 'stackable.heading.edit.top-bottom-line.enable-handlers', 'stackable/icon-label', ( enabled, parentBlock ) => {
+addFilter('stackable.heading.edit.top-bottom-line.enable-handlers', 'stackable/icon-label', (enabled, parentBlock) => {
 	return parentBlock?.name === 'stackable/icon-label' ? false : enabled
-} )
+})

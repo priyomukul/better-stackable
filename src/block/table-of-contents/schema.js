@@ -143,6 +143,26 @@ export const attributes = ( version = VERSION ) => {
 				type: 'boolean',
 				default: true,
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					fontSize: {
+						type: 'list'
+					},
+					titleFontSize: {
+						type: 'title'
+					},
+				},
+			},
 		},
 		versionAdded: '3.6.3',
 		versionDeprecated: '',

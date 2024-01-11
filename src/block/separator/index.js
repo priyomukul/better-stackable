@@ -29,5 +29,5 @@ export const settings = {
 	attributes: schema,
 	deprecated,
 	edit,
-	save,
+	save: () => null,
 }

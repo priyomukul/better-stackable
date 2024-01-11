@@ -114,6 +114,7 @@ if ( ! class_exists( 'Stackable_CSS_Optimize' ) ) {
 
 			// If no contents, don't do anything.
 			if ( empty( $post->post_content ) ) {
+
 				return;
 			}
 
@@ -167,13 +168,14 @@ if ( ! class_exists( 'Stackable_CSS_Optimize' ) ) {
 		 */
 		public static function parse_block_style( $block, &$style_arr ) {
 			$block_content = $block['innerHTML'];
+			if(!empty($block['attrs']['rawCss'])){
+				$block_content = html_entity_decode($block['attrs']['rawCss']);
+			}
 			if ( stripos( $block_content, '<style' ) !== false ) {
-
 				// We need the unique id for tracking.
 				if ( is_array( $block['attrs'] ) && array_key_exists( 'uniqueId', $block['attrs'] ) ) {
-
 					// Gather all the styles.
-					preg_match_all( '#<style[^>]*>(.*?)</style>#', $block_content, $styles );
+					preg_match_all( '#<style[^>]*>([\s\S]*?)</style>#', $block_content, $styles );
 					// $style contains:
 					// 0 = whole style tag
 					// 1 = css inside the style tag
@@ -230,7 +232,7 @@ if ( ! class_exists( 'Stackable_CSS_Optimize' ) ) {
 			if ( ! empty( $this->optimized_css ) ) {
 				echo "\n";
 				echo '<style class="stk-block-styles">';
-				echo apply_filters( 'stackable_frontend_css', $this->optimized_css );
+				echo apply_filters( 'stackable_frontend_css', html_entity_decode($this->optimized_css) );
 				echo '</style>';
 			}
 		}

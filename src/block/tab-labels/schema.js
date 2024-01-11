@@ -113,6 +113,29 @@ export const attributes = ( version = VERSION ) => {
 				type: 'boolean',
 				default: '',
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv',
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					tabPadding: {
+						type: 'button',
+					},
+					tabBorderRadius2: {
+						type: 'button',
+					},
+					tabFontSize: {
+						type: 'button'
+					},
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',

@@ -178,3 +178,17 @@ $block-joined: #{ join($blocks, (), $separator: comma) };
 		padding: 2px;
 	}
 }
+.stl-conditional-control{
+	position: relative;
+	.stl-reset-options{
+		background: none;
+		border: none;
+		color: #f00069;
+		position: absolute;
+		right: -15px;
+		top: -30px;
+		cursor: pointer;
+		padding: 0;
+	}
+}
+

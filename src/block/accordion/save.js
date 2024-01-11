@@ -43,7 +43,8 @@ export const Save = props => {
 	} )
 
 	return (
-		<BlockDiv.Content
+		<><InnerBlocks.Content /></>
+		/*<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
 			open={ attributes.startOpen || undefined }
@@ -52,7 +53,7 @@ export const Save = props => {
 			<BlockStyles.Content version={ props.version } attributes={ attributes } />
 			<CustomCSS.Content attributes={ attributes } />
 			<InnerBlocks.Content />
-		</BlockDiv.Content>
+		</BlockDiv.Content>*/
 	)
 }
 

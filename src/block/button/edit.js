@@ -19,6 +19,8 @@ import {
 	ConditionalDisplay,
 	Transform,
 	getAlignmentClasses,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 import { useBlockStyle } from '~stackable/hooks'
 import {
@@ -52,6 +54,7 @@ const Edit = props => {
 	} = props
 
 	useGeneratedCss( props.attributes )
+	useCssGenerator(attributes, <ButtonStyles.Content {...props} version={ VERSION }/>)
 
 	const typographyInnerClasses = getTypographyClasses( props.attributes )
 	const customAttributes = CustomAttributes.getCustomAttributes( props.attributes )
@@ -74,8 +77,7 @@ const Edit = props => {
 	const typographyInnerClassNames = classnames( [
 		typographyInnerClasses,
 		'stk-button__inner-text',
-	] )
-
+	] );
 	return (
 		<>
 			{ isSelected && (
@@ -96,15 +98,18 @@ const Edit = props => {
 						blockState={ props.blockState }
 						borderSelector=".stk-button"
 						hasFullWidth={ true }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
 						hasTextTag={ false }
 						initialOpen={ false }
 						hasColor={ false }
+						hasOptions={true}
 					/>
 
-					<BlockDiv.InspectorControls initialOpen="spacing" />
+					<BlockDiv.InspectorControls initialOpen="spacing" hasOptions={true} disableColorPicker={true}/>
 
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -127,7 +132,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(attributes, 'blockDiv', blockClassNames) }
 				applyAdvancedAttributes={ false }
 				applyCustomAttributes={ false }
 			>
@@ -137,10 +142,11 @@ const Edit = props => {
 						id: props.attributes.anchor || undefined,
 						...customAttributes,
 					} }
+					className={getGeneratedClasses(attributes,'element')}
 				>
 					<Typography
 						tagName="span"
-						className={ typographyInnerClassNames }
+						className={getGeneratedClasses(attributes, 'text', typographyInnerClassNames)}
 						placeholder={ __( 'Button text', i18n ) }
 						withoutInteractiveFormatting={ true }
 						onReplace={ onReplace }

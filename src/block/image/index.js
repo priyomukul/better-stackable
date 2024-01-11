@@ -37,5 +37,6 @@ export const settings = {
 
 	deprecated,
 	edit,
-	save,
+	//save
+	save: () => null,
 }

@@ -57,6 +57,48 @@ export const attributes = ( version = VERSION ) => {
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
 	} )
+	// for generated classes
+	attrObject.add( {
+		attributes: {
+			// This keeps track of the version of the block, just when we need
+			// to force update the block with new attributes and the save markup
+			// doesn't change.
+			generatedClasses: {
+				type: 'object',
+				default: {
+					containerBorderRadius2:{
+						type: 'container'
+					},
+					containerPadding: {
+						type: 'innerBlocks',
+						desktop: {
+							value: 'xl',
+							class: 'stl-p-6'
+						},
+						tablet: {
+							value: 'xl',
+							class: 'md:stl-p-6'
+						},
+						mobile: {
+							value: 'xl',
+							class: 'sm:stl-p-6'
+						}
+					},
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
+		},
+		versionAdded: '3.1.0',
+		versionDeprecated: '',
+	} )
 
 	attrObject.addDefaultValues( {
 		attributes: {

@@ -24,7 +24,7 @@ import {
 import { InnerBlocks } from '@wordpress/block-editor'
 import { applyFilters } from '@wordpress/hooks'
 
-export const Save = props => {
+const SaveOld = props => {
 	 const {
 		 attributes,
 	 } = props
@@ -65,5 +65,7 @@ export const Save = props => {
 		 </BlockDiv.Content>
 	 )
 }
+
+export const Save = () => <InnerBlocks.Content />;
 
 export default withVersion( VERSION )( Save )

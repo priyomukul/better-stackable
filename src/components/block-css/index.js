@@ -200,7 +200,7 @@ const BlockCss = props => {
 
 	const hover = hoverCallback ? hoverCallback( getAttribute, attributes ) : _hover
 
-	// Some BlockCss components do not have the responsive prop. This is default behavior of obtaining the desktop value.
+// Some BlockCss components do not have the responsive prop. This is default behavior of obtaining the desktop value.
 	const hasDesktop = responsive === 'all' || responsive === false || ( Array.isArray( responsive ) && responsive.find( s => s.startsWith( 'desktop' ) ) )
 	const hasTablet = responsive === 'all' || ( Array.isArray( responsive ) && responsive.find( s => s.startsWith( 'tablet' ) ) )
 	const hasMobile = responsive === 'all' || ( Array.isArray( responsive ) && responsive.find( s => s.startsWith( 'mobile' ) ) )
@@ -367,16 +367,16 @@ const BlockCss = props => {
 	if ( Array.isArray( hoverSelector ) ) {
 		hoverSelector = hoverSelector.join( ', ' )
 	}
-
-	selector = prependCSSClass( selector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper' : '' )
+	
+	selector = prependCSSClass( selector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper .wp-block' : '' )
 	if ( hasHover ) {
-		hoverSelector = prependCSSClass( hoverSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper' : '' )
+		hoverSelector = prependCSSClass( hoverSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper .wp-block' : '' )
 	}
 	if ( hasParentHover ) {
-		parentHoverSelector = prependCSSClass( parentHoverSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper' : '' )
+		parentHoverSelector = prependCSSClass( parentHoverSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper .wp-block' : '' )
 	}
 	if ( hasCollapsed ) {
-		collapsedSelector = prependCSSClass( collapsedSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper' : '' )
+		collapsedSelector = prependCSSClass( collapsedSelector, blockUniqueClassName, blockUniqueClassName, editorMode ? '.editor-styles-wrapper .wp-block' : '' )
 	}
 
 	let css = ''
@@ -502,9 +502,11 @@ function createCssEdit( selector, rule, value, device = 'desktop', vendorPrefixe
 	// KebabCase the style rule, but support custom CSS properties (double dashes) and vendor prefixes (one dash).
 	const cleanedRuleName = rule.replace( /^(--?)?(.*?$)/, ( matches, dashes, rule ) => `${ dashes || '' }${ kebabCase( rule ) }` )
 	let css = `${ cleanedRuleName }: ${ value } !important`
+	//let css = `${ cleanedRuleName }: ${ value }`
 	if ( vendorPrefixes.length ) {
 		vendorPrefixes.forEach( vendorPrefx => {
 			css += `;${ vendorPrefx }${ cleanedRuleName }: ${ value } !important`
+			//css += `;${ vendorPrefx }${ cleanedRuleName }: ${ value }`
 		} )
 	}
 	css = `\n${ selector } {\n\t${ css }\n}`
@@ -545,9 +547,11 @@ function addCssToCssSaveObject( selector, rule, value, device = 'desktop', vendo
 	 const cleanedRuleName = rule.replace( /^(--?)?(.*?$)/, ( matches, dashes, rule ) => `${ dashes || '' }${ kebabCase( rule ) }` )
 
 	 compileToObject.addStyle( selector, cleanedRuleName, `${ value } !important`, device )
+	 //compileToObject.addStyle( selector, cleanedRuleName, `${ value }`, device )
 	 if ( vendorPrefixes.length ) {
 		 vendorPrefixes.forEach( vendorPrefx => {
 			 compileToObject.addStyle( selector, `${ vendorPrefx }${ cleanedRuleName }`, `${ value } !important`, device )
+			 //compileToObject.addStyle( selector, `${ vendorPrefx }${ cleanedRuleName }`, `${ value }`, device )
 		 } )
 	 }
 

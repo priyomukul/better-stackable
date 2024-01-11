@@ -23,7 +23,7 @@ import {
 import { InnerBlocks } from '@wordpress/block-editor'
 import { compose } from '@wordpress/compose'
 
-export const Save = props => {
+const SaveOld = props => {
 	const {
 		attributes,
 	} = props
@@ -62,6 +62,8 @@ export const Save = props => {
 		</BlockDiv.Content>
 	)
 }
+
+export const Save = () => <InnerBlocks.Content />;
 
 export default compose(
 	withVersion( VERSION )

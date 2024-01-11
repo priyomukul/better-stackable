@@ -27,7 +27,7 @@ import { InnerBlocks } from '@wordpress/block-editor'
 import { compose } from '@wordpress/compose'
 import { applyFilters } from '@wordpress/hooks'
 
-export const Save = props => {
+const SaveOld = props => {
 	const {
 		attributes,
 		className,
@@ -80,6 +80,8 @@ export const Save = props => {
 		</BlockDiv.Content>
 	)
 }
+
+export const Save = (props) => <InnerBlocks.Content />;
 
 export default compose(
 	withVersion( VERSION )

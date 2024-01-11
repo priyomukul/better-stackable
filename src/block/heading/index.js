@@ -11,7 +11,6 @@ import { HeadingIcon } from '~stackable/icons'
  */
 import transforms from './transforms'
 import edit from './edit'
-import save from './save'
 import schema from './schema'
 import metadata from './block.json'
 import example from './example'
@@ -23,21 +22,21 @@ export const settings = {
 	attributes: schema,
 	supports: {
 		anchor: true,
-		align: [ 'center', 'wide', 'full' ],
+		align: ['center', 'wide', 'full'],
 		spacing: true,
 	},
 	deprecated,
 	edit,
-	save,
+	save: () => null,
 	example,
 	transforms,
-	merge( attributes, attributesToMerge ) {
+	merge(attributes, attributesToMerge) {
 		// Make sure that the selection is always at the end of the text.
 		// @see https://github.com/WordPress/gutenberg/blob/3da717b8d0ac7d7821fc6d0475695ccf3ae2829f/packages/block-library/src/paragraph/index.js
 		return {
 			text:
-				( attributes.text || '' ) +
-			( ( attributesToMerge.hasOwnProperty( 'content' ) ? attributesToMerge.content : attributesToMerge.text ) || '' ),
+				(attributes.text || '') +
+				((attributesToMerge.hasOwnProperty('content') ? attributesToMerge.content : attributesToMerge.text) || ''),
 		}
 	},
 }

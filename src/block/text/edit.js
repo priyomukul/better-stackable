@@ -21,6 +21,8 @@ import {
 	EffectsAnimations,
 	ConditionalDisplay,
 	Transform,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 import { version as VERSION, i18n } from 'stackable'
 import classnames from 'classnames'
@@ -50,12 +52,12 @@ import { compose } from '@wordpress/compose'
  *
  * @see ~stackable/util/blocks#createBlockCompleter
  */
-addFilter( 'editor.Autocomplete.completers', 'stackable/text', ( filteredCompleters, name ) => {
-	if ( name === 'stackable/text' ) {
-		return [ ...filteredCompleters, createBlockCompleter() ]
+addFilter('editor.Autocomplete.completers', 'stackable/text', (filteredCompleters, name) => {
+	if (name === 'stackable/text') {
+		return [...filteredCompleters, createBlockCompleter()]
 	}
 	return filteredCompleters
-} )
+})
 
 const Edit = props => {
 	const {
@@ -68,73 +70,76 @@ const Edit = props => {
 		isSelected,
 	} = props
 
-	useGeneratedCss( props.attributes )
+	useGeneratedCss(props.attributes)
 
-	const textClasses = getTypographyClasses( props.attributes )
-	const blockAlignmentClass = getAlignmentClasses( props.attributes )
+	const textClasses = getTypographyClasses(props.attributes)
+	const blockAlignmentClass = getAlignmentClasses(props.attributes)
 	const {
 		parentBlock, isFirstBlock, isLastBlock,
 	} = useBlockContext()
 
-	const enableColumns = applyFilters( 'stackable.text.edit.enable-column', true, parentBlock )
+	const enableColumns = applyFilters('stackable.text.edit.enable-column', true, parentBlock)
 
-	const blockClassNames = classnames( [
+	const blockClassNames = classnames([
 		className,
 		'stk-block-text',
-	] )
+	])
 
-	const textClassNames = classnames( [
+	const textClassNames = classnames([
 		'stk-block-text__text',
 		textClasses,
 		blockAlignmentClass,
-	] )
+	])
 
-	const placeholder = applyFilters( 'stackable.text.edit.placeholder', __( 'Type / to choose a block', i18n ), {
+	const placeholder = applyFilters('stackable.text.edit.placeholder', __('Type / to choose a block', i18n), {
 		parentBlock, isFirstBlock, isLastBlock,
-	} )
+	})
 
-	const onSplit = ( value, isOriginal ) => {
+	const onSplit = (value, isOriginal) => {
 		// @see https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/paragraph/edit.js
 		let newAttributes
 
-		if ( isOriginal || value ) {
+		if (isOriginal || value) {
 			newAttributes = {
 				...attributes,
 				text: value,
 			}
 		}
 
-		const block = createBlock( 'stackable/text', newAttributes )
+		const block = createBlock('stackable/text', newAttributes)
 
-		if ( isOriginal ) {
+		if (isOriginal) {
 			block.clientId = props.clientId
 		}
 
 		return block
 	}
+	useCssGenerator(attributes, <TextStyles.Content version={VERSION} attributes={attributes} />);
 
 	return (
 		<>
-			{ isSelected && (
+			{isSelected && (
 				<>
 					<InspectorTabs />
 
 					<Typography.InspectorControls
-						{ ...props }
-						hasTextTag={ false }
-						isMultiline={ true }
-						initialOpen={ true }
-						hasTextShadow={ true }
+						{...props}
+						hasTextTag={false}
+						isMultiline={true}
+						initialOpen={true}
+						hasTextShadow={true}
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Alignment.InspectorControls
-						labelContentAlign={ sprintf( __( '%s Alignment', i18n ), __( 'Text', i18n ) ) }
-						hasContentJustify={ true }
+						labelContentAlign={sprintf(__('%s Alignment', i18n), __('Text', i18n))}
+						hasContentJustify={true}
 					/>
-					{ enableColumns && (
+					{enableColumns && (
 						<InspectorLayoutControls>
 							<AdvancedRangeControl
-								label={ __( 'Columns', i18n ) }
-								allowReset={ true }
+								label={__('Columns', i18n)}
+								allowReset={true}
 								attribute="columns"
 								min="1"
 								sliderMax="3"
@@ -144,17 +149,17 @@ const Edit = props => {
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Column Gap', i18n ) }
-								allowReset={ true }
+								label={__('Column Gap', i18n)}
+								allowReset={true}
 								attribute="columnGap"
 								min="0"
 								sliderMax="50"
 								responsive="all"
 							/>
 						</InspectorLayoutControls>
-					) }
+					)}
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 
@@ -164,32 +169,32 @@ const Edit = props => {
 					<Responsive.InspectorControls />
 					<ConditionalDisplay.InspectorControls />
 				</>
-			) }
+			)}
 
 			<TextStyles
-				version={ VERSION }
-				blockState={ props.blockState }
-				clientId={ clientId }
+				version={VERSION}
+				blockState={props.blockState}
+				clientId={clientId}
 			/>
 			<CustomCSS mainBlockClass="stk-block-text" />
 
 			<BlockDiv
-				blockHoverClass={ props.blockHoverClass }
-				clientId={ props.clientId }
-				attributes={ props.attributes }
-				className={ blockClassNames }
+				blockHoverClass={props.blockHoverClass}
+				clientId={props.clientId}
+				attributes={props.attributes}
+				className={blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv')}
 			>
 				<Typography
-					tagName={ props.attributes.innerTextTag || 'p' }
-					className={ textClassNames }
-					placeholder={ placeholder }
-					onMerge={ mergeBlocks }
-					onRemove={ onRemove }
-					onReplace={ onReplace }
-					onSplit={ onSplit }
+					tagName={props.attributes.innerTextTag || 'p'}
+					className={textClassNames + ' ' + getGeneratedClasses(attributes, 'element')}
+					placeholder={placeholder}
+					onMerge={mergeBlocks}
+					onRemove={onRemove}
+					onReplace={onReplace}
+					onSplit={onSplit}
 				/>
 			</BlockDiv>
-			{ props.isHovered && <MarginBottom /> }
+			{props.isHovered && <MarginBottom />}
 		</>
 	)
 }
@@ -198,4 +203,4 @@ export default compose(
 	withBlockWrapperIsHovered,
 	withQueryLoopContext,
 	withBlockAttributeContext,
-)( Edit )
+)(Edit)

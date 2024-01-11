@@ -31,7 +31,7 @@ import {
 	BlockLink,
 	Transform,
 	ContentAlign,
-	getContentAlignmentClasses,
+	getContentAlignmentClasses, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 import { useBlockContext } from '~stackable/hooks'
 import {
@@ -78,6 +78,7 @@ const Edit = props => {
 	const lastBlockName = last( innerBlocks )?.name
 	const renderAppender = hasInnerBlocks ? ( [ 'stackable/text', 'core/paragraph' ].includes( lastBlockName ) ? () => <></> : InnerBlocks.DefaultBlockAppender ) : InnerBlocks.ButtonBlockAppender
 
+	useCssGenerator(attributes, <TeamMemberStyles.Content attributes={attributes} version={VERSION}/>)
 	return (
 		<>
 			{ isSelected && (
@@ -86,8 +87,8 @@ const Edit = props => {
 
 					<ContentAlign.InspectorControls />
 					<Alignment.InspectorControls hasContainerSize={ true } hasBlockAlignment={ true } />
-					<BlockDiv.InspectorControls />
-					<ContainerDiv.InspectorControls sizeSelector=".stk-block-content" />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
+					<ContainerDiv.InspectorControls sizeSelector=".stk-block-content" hasOptions={true}/>
 					<BlockLink.InspectorControls />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -107,7 +108,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(attributes, 'blockDiv', blockClassNames) }
 				enableVariationPicker={ true }
 			>
 				<TeamMemberStyles
@@ -117,7 +118,7 @@ const Edit = props => {
 				/>
 				<CustomCSS mainBlockClass="stk-block-team-member" />
 
-				<ContainerDiv className={ contentClassNames }>
+				<ContainerDiv className={ getGeneratedClasses(attributes, 'container', contentClassNames)}>
 					<InnerBlocks
 						template={ TEMPLATE }
 						templateLock={ false }

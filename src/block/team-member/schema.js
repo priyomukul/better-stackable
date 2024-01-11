@@ -53,6 +53,52 @@ export const attributes = ( version = VERSION ) => {
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
 	} )
+	attrObject.add( {
+		attributes: {
+			contentAlign: {
+				stkResponsive: true,
+				type: 'string',
+				default: '',
+			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					fontSize:{
+						type: 'text'
+					},
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					containerBorderRadius2:{
+						type: 'container'
+					},
+					containerPadding: {
+						type: 'container',
+						desktop: {
+							value: 'xl',
+							class: 'stl-p-6'
+						},
+						tablet: {
+							value: 'xl',
+							class: 'md:stl-p-6'
+						},
+						mobile: {
+							value: 'xl',
+							class: 'sm:stl-p-6'
+						}
+					},
+				},
+			},
+		},
+		versionAdded: '3.2.0',
+		versionDeprecated: '',
+	} )
 
 	attrObject.addDefaultValues( {
 		attributes: {

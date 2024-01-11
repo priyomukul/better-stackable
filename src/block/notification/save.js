@@ -59,8 +59,8 @@ export const Save = props => {
 		props
 	) )
 
-	return (
-		<BlockDiv.Content
+	return ( <InnerBlocks.Content />
+		/*<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
 			version={ props.version }
@@ -87,7 +87,7 @@ export const Save = props => {
 					</button>
 				}
 			</ContainerDiv.Content>
-		</BlockDiv.Content>
+		</BlockDiv.Content>*/
 	)
 }
 

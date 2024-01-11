@@ -86,34 +86,55 @@ export const iconListAttributes = {
 		type: 'number',
 		default: '',
 	},
+	generatedClasses: {
+		type: 'object',
+		default: {
+			fontSize: {
+				type: 'element',
+				desktop: {
+					value: 'xl',
+					class: 'stl-text-xl'
+				}
+			},
+			blockBorderRadius2: {
+				type: 'blockDiv'
+			},
+			blockPadding: {
+				type: 'blockDiv',
+			},
+			blockMargin: {
+				type: 'blockDiv',
+			}
+		},
+	}
 }
 
-export const attributes = ( version = VERSION ) => {
+export const attributes = (version = VERSION) => {
 	const attrObject = new AttributeObject()
 
-	Alignment.addAttributes( attrObject )
-	Advanced.addAttributes( attrObject )
-	Transform.addAttributes( attrObject )
-	BlockDiv.addAttributes( attrObject )
-	Style.addAttributes( attrObject )
-	CustomAttributes.addAttributes( attrObject )
-	CustomCSS.addAttributes( attrObject )
-	EffectsAnimations.addAttributes( attrObject )
-	Responsive.addAttributes( attrObject )
-	ConditionalDisplay.addAttributes( attrObject )
-	Typography.addAttributes( attrObject, 'ul,ol', {
+	Alignment.addAttributes(attrObject)
+	Advanced.addAttributes(attrObject)
+	Transform.addAttributes(attrObject)
+	BlockDiv.addAttributes(attrObject)
+	Style.addAttributes(attrObject)
+	CustomAttributes.addAttributes(attrObject)
+	CustomCSS.addAttributes(attrObject)
+	EffectsAnimations.addAttributes(attrObject)
+	Responsive.addAttributes(attrObject)
+	ConditionalDisplay.addAttributes(attrObject)
+	Typography.addAttributes(attrObject, 'ul,ol', {
 		hasTextTag: false,
 		multiline: 'li',
-		multilineWrapperTags: [ 'ol', 'ul' ],
-	} )
-	MarginBottom.addAttributes( attrObject )
+		multilineWrapperTags: ['ol', 'ul'],
+	})
+	MarginBottom.addAttributes(attrObject)
 
-	attrObject.add( {
+	attrObject.add({
 		attributes: iconListAttributes,
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	return attrObject.getMerged( version )
+	return attrObject.getMerged(version)
 }
-export default attributes( VERSION )
+export default attributes(VERSION)

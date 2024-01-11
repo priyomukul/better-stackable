@@ -30,7 +30,7 @@ import {
 	Responsive,
 	Advanced,
 	MarginBottom,
-	Transform,
+	Transform, getGeneratedClasses, useCssGenerator,
 } from '~stackable/block-components'
 import { useBlockContext } from '~stackable/hooks'
 import {
@@ -76,6 +76,8 @@ const Edit = props => {
 		'stk-block-blockquote__content',
 	] )
 
+	useCssGenerator(props.attributes, <ContainerStyles.Content attributes={props.attributes} version={VERSION}/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -83,10 +85,11 @@ const Edit = props => {
 					<InspectorTabs />
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<ContainerDiv.InspectorControls
 						sizeSelector=".stk-block-content"
 						hasContentVerticalAlign={ true }
+						hasOptions={true} disableColorPicker={true}
 					/>
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -106,7 +109,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames) }
 				enableVariationPicker={ true }
 			>
 				<ContainerStyles
@@ -116,7 +119,7 @@ const Edit = props => {
 				/>
 				<CustomCSS mainBlockClass="stk-block-blockquote" />
 
-				<ContainerDiv className={ contentClassNames }>
+				<ContainerDiv className={ getGeneratedClasses(props.attributes, 'container', contentClassNames) }>
 					<InnerBlocks
 						template={ TEMPLATE }
 						templateLock="all"

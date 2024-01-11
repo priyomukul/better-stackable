@@ -14,7 +14,7 @@ import {
 	CustomAttributes,
 	EffectsAnimations,
 	ConditionalDisplay,
-	Transform,
+	Transform, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 import {
 	withBlockAttributeContext, withBlockWrapper, withQueryLoopContext,
@@ -48,7 +48,7 @@ const Edit = props => {
 		className,
 		'stk-block-icon-button',
 	] )
-
+	useCssGenerator(props.attributes, <IconButtonStyles.Content version={ VERSION } {...props}/>)
 	return (
 		<>
 			{ isSelected && (
@@ -61,16 +61,24 @@ const Edit = props => {
 					<Button.InspectorControls.Link />
 					<Button.InspectorControls.Colors
 						hasTextColor={ false }
-						hasIconColor={ true }
+						hasIconColor={ false }
+						disableColorPicker={true}
 					/>
-					<Button.InspectorControls.Icon hasColor={ false } defaultValue={ defaultIcon } />
-					<Button.InspectorControls.Size hasWidth={ true } />
+					<Button.InspectorControls.Icon
+						hasColor={ false }
+						defaultValue={ defaultIcon }
+						hasOptions={true}
+						disableColorPicker={true}
+					/>
+					<Button.InspectorControls.Size hasWidth={ true } hasOptions={true}/>
 					<Button.InspectorControls.Borders
 						borderSelector=".stk-button"
 						placeholder="24"
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
-					<BlockDiv.InspectorControls initialOpen="spacing" />
+					<BlockDiv.InspectorControls initialOpen="spacing" hasOptions={true} disableColorPicker={true}/>
 
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -81,7 +89,6 @@ const Edit = props => {
 					<ConditionalDisplay.InspectorControls />
 				</>
 			) }
-
 			<IconButtonStyles
 				version={ VERSION }
 				blockState={ props.blockState }
@@ -93,7 +100,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames)}
 				applyAdvancedAttributes={ false }
 				applyCustomAttributes={ false }
 			>
@@ -103,6 +110,7 @@ const Edit = props => {
 						id: props.attributes.anchor || undefined,
 						...customAttributes,
 					} }
+					className={getGeneratedClasses(props.attributes, 'element')}
 				/>
 			</BlockDiv>
 		</>

@@ -26,5 +26,5 @@ export const settings = {
 	transforms,
 	deprecated,
 	edit,
-	save,
+	save : () => null,
 }

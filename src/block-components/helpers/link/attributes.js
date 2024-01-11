@@ -6,23 +6,23 @@ export const linkAttributes = ( selector = 'a' ) => {
 		},
 		url: {
 			type: 'string',
-			source: 'attribute',
+			// source: 'attribute',
 			selector,
-			attribute: 'href',
+			// attribute: 'href',
 			default: '',
 		},
 		newTab: {
 			type: 'boolean',
-			source: 'attribute',
+			// source: 'attribute',
 			selector,
-			attribute: 'target',
+			// attribute: 'target',
 			default: false,
 		},
 		rel: {
 			type: 'string',
-			source: 'attribute',
+			// source: 'attribute',
 			selector,
-			attribute: 'rel',
+			// attribute: 'rel',
 			default: '',
 		},
 		hasTitle: {
@@ -31,9 +31,9 @@ export const linkAttributes = ( selector = 'a' ) => {
 		},
 		title: {
 			type: 'string',
-			source: 'attribute',
+			// source: 'attribute',
 			selector,
-			attribute: 'title',
+			// attribute: 'title',
 			default: '',
 		},
 		hasLightbox: {

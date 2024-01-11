@@ -54,6 +54,20 @@ export const attributes = ( version = VERSION ) => {
 				type: 'boolean',
 				default: '',
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
 		},
 		versionAdded: '3.4.3',
 		versionDeprecated: '',

@@ -29,14 +29,15 @@ export const settings = {
 	example,
 	deprecated,
 	edit,
-	save,
-	merge( attributes, attributesToMerge ) {
+	// save,
+	save: () => null,
+	merge(attributes, attributesToMerge) {
 		// Make sure that the selection is always at the end of the text.
 		// @see https://github.com/WordPress/gutenberg/blob/3da717b8d0ac7d7821fc6d0475695ccf3ae2829f/packages/block-library/src/paragraph/index.js
 		return {
 			text:
-				( attributes.text || '' ) +
-				( attributesToMerge.text || '' ),
+				(attributes.text || '') +
+				(attributesToMerge.text || ''),
 		}
 	},
 }

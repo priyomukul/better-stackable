@@ -27,6 +27,8 @@ import {
 	Alignment,
 	Typography,
 	getTypographyClasses,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 import {
 	withBlockAttributeContext,
@@ -49,45 +51,49 @@ const Edit = props => {
 		clientId,
 		className,
 		isSelected,
+		attributes
 	} = props
 
-	useGeneratedCss( props.attributes )
+	useGeneratedCss( attributes )
 
 	const figcaptionClassnames = classnames(
-		getTypographyClasses( props.attributes, 'figcaption%s' ),
+		getTypographyClasses( attributes, 'figcaption%s' ),
 		'stk-img-figcaption'
-
 	)
 
-	const blockAlignmentClass = getAlignmentClasses( props.attributes )
-	const { parentBlock } = useBlockContext( clientId )
+	const blockAlignmentClass = getAlignmentClasses(attributes)
+	const { parentBlock } = useBlockContext(clientId)
 
 	// Allow special or layout blocks to disable the link for the image block,
 	// e.g. image box doesn't need the image to have a link since it has it's
 	// own link.
-	const enableLink = applyFilters( 'stackable.edit.image.enable-link', true, parentBlock )
+	const enableLink = applyFilters('stackable.edit.image.enable-link', true, parentBlock)
 
-	const blockClassNames = classnames( [
+	const blockClassNames = classnames([
 		className,
 		'stk-block-image',
 		blockAlignmentClass,
-	] )
+	])
+
+	useCssGenerator(attributes, <BlockStyles.Content version={VERSION} attributes={attributes} />);
 
 	return (
 		<>
-			{ isSelected && (
+			{isSelected && (
 				<>
 					<InspectorTabs />
 
 					<Alignment.InspectorControls />
 					<Image.InspectorControls
-						{ ...props }
-						initialOpen={ true }
-						heightUnits={ heightUnit }
+						{...props}
+						initialOpen={true}
+						heightUnits={heightUnit}
 						hasLightbox
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
-					{ enableLink && <Link.InspectorControls hasTitle={ true } isAdvancedTab={ true } /> }
-					<BlockDiv.InspectorControls />
+					{enableLink && <Link.InspectorControls hasTitle={true} isAdvancedTab={true} />}
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -107,21 +113,21 @@ const Edit = props => {
 			) }
 
 			<BlockStyles
-				version={ VERSION }
-				blockState={ props.blockState }
-				clientId={ clientId }
+				version={VERSION}
+				blockState={props.blockState}
+				clientId={clientId}
 			/>
 			<CustomCSS mainBlockClass="stk-block-image" />
 
 			<BlockDiv
-				blockHoverClass={ props.blockHoverClass }
-				clientId={ props.clientId }
-				attributes={ props.attributes }
-				className={ blockClassNames }
+				blockHoverClass={props.blockHoverClass}
+				clientId={props.clientId}
+				attributes={attributes}
+				className={blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv')}
 			>
 				<Image
 					showTooltips
-					heightUnits={ heightUnit }
+					heightUnits={heightUnit}
 					defaultWidth="100"
 					defaultHeight="auto"
 				/>
@@ -133,7 +139,7 @@ const Edit = props => {
 					/>
 				}
 			</BlockDiv>
-			{ props.isHovered && <MarginBottom /> }
+			{props.isHovered && <MarginBottom />}
 		</>
 	)
 }

@@ -29,6 +29,27 @@ export const attributes = ( version = VERSION ) => {
 	Responsive.addAttributes( attrObject )
 	ConditionalDisplay.addAttributes( attrObject )
 
+	attrObject.add({
+		attributes: {
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+				},
+			}
+		},
+		versionAdded: '3.0.0',
+		versionDeprecated: '',
+	});
+
 	attrObject.addDefaultValues( {
 		attributes: {
 			customAttributes: [ [ 'aria-expanded', 'false' ] ],

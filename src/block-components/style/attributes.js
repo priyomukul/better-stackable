@@ -9,6 +9,10 @@ export const addAttributes = attrObject => {
 					 .stk-block > * > style:not(.stk-custom-css)`,
 				default: '',
 			},
+			rawCss: {
+				type: 'string',
+				default: '',
+			},
 		},
 		versionAdded: '3.0.3',
 		versionDeprecated: '',

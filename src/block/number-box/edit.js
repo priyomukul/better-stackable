@@ -22,7 +22,7 @@ import {
 	ConditionalDisplay,
 	BorderControls,
 	BackgroundControls,
-	Transform,
+	Transform, getGeneratedClasses, useCssGenerator,
 } from '~stackable/block-components'
 import { version as VERSION, i18n } from 'stackable'
 import classnames from 'classnames'
@@ -69,6 +69,8 @@ const Edit = props => {
 		textClasses,
 	] )
 
+	useCssGenerator(props.attributes, <HeadingStyles.Content attributes={props.attributes} version={VERSION}/>);
+
 	return (
 		<>
 			{ isSelected && (
@@ -101,6 +103,8 @@ const Edit = props => {
 							<BorderControls
 								attrNameTemplate="shape%s"
 								borderSliderMax="100"
+								hasOptions={true}
+								disableColorPicker={true}
 							/>
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
@@ -109,10 +113,11 @@ const Edit = props => {
 						initialOpen={ false }
 						hasTextTag={ false }
 						sizePlaceholder="56"
+						hasOptions={true} disableColorPicker={true}
 					/>
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -120,7 +125,6 @@ const Edit = props => {
 					<CustomCSS.InspectorControls mainBlockClass="stk-block-number-box" />
 					<Responsive.InspectorControls />
 					<ConditionalDisplay.InspectorControls />
-
 				</>
 			) }
 
@@ -135,12 +139,12 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames) }
 			>
 				<Typography
 					tagName="div"
 					placeholder="1"
-					className={ textClassNames }
+					className={ getGeneratedClasses(props.attributes, 'element', getGeneratedClasses(props.attributes, 'shape', textClassNames)) }
 				/>
 			</BlockDiv>
 			{ props.isHovered && <MarginBottom /> }

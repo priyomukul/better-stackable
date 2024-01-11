@@ -43,7 +43,10 @@ import {
 	ContentAlign,
 	getContentAlignmentClasses,
 	ColumnsControl,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
+import { ConditionalControl } from '~stackable/components';
 import { useBlockContext, useDeviceType } from '~stackable/hooks'
 import {
 	withBlockAttributeContext,
@@ -61,6 +64,7 @@ import { compose } from '@wordpress/compose'
 import { __, sprintf } from '@wordpress/i18n'
 import { range } from 'lodash'
 import { defaultIconNext, defaultIconPrev } from './schema'
+import {BORDER_RADIUS} from '~stackable/config'
 
 const ALLOWED_INNER_BLOCKS = [ 'stackable/column' ]
 
@@ -129,7 +133,7 @@ const Edit = props => {
 	let maxSlides = numInnerBlocks
 	let slidesToShow = attributes.slidesToShow || 1
 	if ( carouselType === 'slide' ) {
-		if ( ( deviceType === 'Tablet' || deviceType === 'Mobile' ) && attributes.slidesToShowTablet ) {
+				if ( ( deviceType === 'Tablet' || deviceType === 'Mobile' ) && attributes.slidesToShowTablet ) {
 			slidesToShow = attributes.slidesToShowTablet
 		}
 		if ( deviceType === 'Mobile' && attributes.slidesToShowMobile ) {
@@ -251,6 +255,11 @@ const Edit = props => {
 			setActiveSlide( maxSlides )
 		}
 	}, [ maxSlides, activeSlide ] )
+
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/>);
 
 	return (
 		<>
@@ -423,11 +432,13 @@ const Edit = props => {
 								label={ sprintf( __( '%s Color', i18n ), __( 'Button', i18n ) ) }
 								attribute="arrowButtonColor"
 								hover="all"
+								disableColorPicker={true}
 							/>
 							<ColorPaletteControl
 								label={ sprintf( __( '%s Color', i18n ), __( 'Icon', i18n ) ) }
 								attribute="arrowIconColor"
 								hover="all"
+								disableColorPicker={true}
 							/>
 							<AdvancedRangeControl
 								label={ sprintf( __( '%s Width', i18n ), __( 'Button', i18n ) ) }
@@ -447,13 +458,27 @@ const Edit = props => {
 								responsive="all"
 								placeholder="40"
 							/>
-							<AdvancedRangeControl
-								label={ __( 'Border Radius', i18n ) }
-								attribute="arrowBorderRadius"
-								sliderMax={ Math.max( attributes.arrowHeight, attributes.arrowWidth, 40 ) }
-								min={ 0 }
-								placeholder="40"
-							/>
+
+							<ConditionalControl
+								type="button"
+								options={BORDER_RADIUS}
+								isEnabled={true}
+								label={__('Border Radius', i18n)}
+								attributeName="arrowBorderRadius"
+								saveAttr={props.attributes.generatedClasses}
+								saveAttrName={'generatedClasses'}
+								hasResponsive={false}
+							>
+								<AdvancedRangeControl
+									label={ __( 'Border Radius', i18n ) }
+									attribute="arrowBorderRadius"
+									sliderMax={ Math.max( attributes.arrowHeight, attributes.arrowWidth, 40 ) }
+									min={ 0 }
+									placeholder="40"
+									responsive={false}
+								/>
+							</ConditionalControl>
+
 							<AdvancedRangeControl
 								label={ sprintf( __( '%s Size', i18n ), __( 'Icon', i18n ) ) }
 								attribute="arrowIconSize"
@@ -520,10 +545,12 @@ const Edit = props => {
 								label={ sprintf( __( '%s Color', i18n ), __( 'Dot', i18n ) ) }
 								attribute="dotsColor"
 								hover="all"
+								disableColorPicker={true}
 							/>
 							<ColorPaletteControl
 								label={ sprintf( __( '%s Color', i18n ), __( 'Active Dot', i18n ) ) }
 								attribute="dotsActiveColor"
+								disableColorPicker={true}
 							/>
 							<AdvancedRangeControl
 								label={ sprintf( __( '%s Size', i18n ), __( 'Dot', i18n ) ) }
@@ -532,6 +559,16 @@ const Edit = props => {
 								sliderMax={ 40 }
 								placeholder="8"
 							/>
+							<ConditionalControl
+								type="button"
+								options={BORDER_RADIUS}
+								isEnabled={true}
+								label={__('Border Radius', i18n)}
+								attributeName="dotsBorderRadius"
+								saveAttr={props.attributes.generatedClasses}
+								saveAttrName={'generatedClasses'}
+								hasResponsive={false}
+							>
 							<AdvancedRangeControl
 								label={ __( 'Border Radius', i18n ) }
 								attribute="dotsBorderRadius"
@@ -539,6 +576,7 @@ const Edit = props => {
 								min={ 0 }
 								placeholder={ attributes.dotsSize || '8' }
 							/>
+							</ConditionalControl>
 							<AdvancedRangeControl
 								label={ sprintf( __( '%s Gap', i18n ), __( 'Dots', i18n ) ) }
 								attribute="dotsGap"
@@ -579,7 +617,7 @@ const Edit = props => {
 
 					<ContentAlign.InspectorControls />
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Separator.InspectorControls />
 					<Advanced.InspectorControls />
 
@@ -642,7 +680,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<BlockStyles
 					version={ VERSION }
@@ -655,7 +693,7 @@ const Edit = props => {
 				<Separator>
 					<div className="stk-block-carousel__content-wrapper">
 						<div
-							className={ contentClassNames }
+							className={ getGeneratedClasses( props.attributes, '', contentClassNames ) }
 							data-align={ ! props.attributes.contentAlign ? undefined // Only needed in the backend
 								: props.attributes.contentAlign === 'alignwide' ? 'wide'
 									: props.attributes.contentAlign === 'alignfull' ? 'full' : undefined }
@@ -666,7 +704,7 @@ const Edit = props => {
 										return `.stk-${ attributes.uniqueId }-column > .stk-block-carousel__slider > .block-editor-inner-blocks > .block-editor-block-list__layout > [data-type="stackable/column"]:nth-child(${ i + 1 }) {
 										opacity: 0;
 										visibility: hidden;
-										left: ${ isRTL ? '' : '-' }${ 100 * ( i ) }%;
+										left: -${ 100 * ( i ) }%;
 									}`
 									} ) }
 									{ `.stk-${ attributes.uniqueId }-column > .stk-block-carousel__slider > .block-editor-inner-blocks > .block-editor-block-list__layout > [data-type="stackable/column"]:nth-child(${ activeSlide }) {
@@ -695,22 +733,22 @@ const Edit = props => {
 							{ attributes.showArrows && (
 								<div className="stk-block-carousel__buttons">
 									<button
-										className="stk-block-carousel__button stk-block-carousel__button__prev"
+										className={ getGeneratedClasses( props.attributes, 'arrows', 'stk-block-carousel__button stk-block-carousel__button__prev') }
 										onClick={ prevSlide }
 									>
-										<SvgIcon value={ attributes.arrowIconPrev || defaultIcon.prev } />
+										<SvgIcon value={ attributes.arrowIconPrev || defaultIconPrev } />
 									</button>
 									<button
-										className="stk-block-carousel__button stk-block-carousel__button__next"
+										className={getGeneratedClasses( props.attributes, 'arrows', 'stk-block-carousel__button stk-block-carousel__button__next')}
 										onClick={ nextSlide }
 									>
-										<SvgIcon value={ attributes.arrowIconNext || defaultIcon.next } />
+										<SvgIcon value={ attributes.arrowIconNext || defaultIconNext } />
 									</button>
 								</div>
 							) }
 						</div>
 						{ attributes.showDots && (
-							<div className="stk-block-carousel__dots" role="list" data-label="Slide %d">
+							<div className={getGeneratedClasses( props.attributes, 'dots', "stk-block-carousel__dots" )} role="list" data-label="Slide %d">
 								{ range( maxSlides ).map( i => {
 									// active dot is the leftmost slide
 									// for RTL, don't show the first n dots

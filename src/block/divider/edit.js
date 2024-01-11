@@ -20,7 +20,7 @@ import {
 	CustomAttributes,
 	EffectsAnimations,
 	ConditionalDisplay,
-	Transform,
+	Transform, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 import { version as VERSION, i18n } from 'stackable'
 import classnames from 'classnames'
@@ -58,6 +58,8 @@ const Edit = props => {
 		blockAlignmentClass,
 	] )
 
+	useCssGenerator(props.attributes, <DividerStyles.Content version={VERSION} attributes={props.attributes}/>);
+
 	return (
 		<>
 			{ isSelected && (
@@ -88,7 +90,7 @@ const Edit = props => {
 					</BlockStyle.InspectorControls>
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -111,7 +113,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames) }
 			>
 				{ [ 'dots', 'asterisks' ].includes( blockStyle ) ? (
 					<div className="stk-block-divider__dots" aria-hidden="true">

@@ -30,7 +30,7 @@ import {
 
 export { deprecateTypographyGradientColor } from './deprecated'
 
-export const Typography = memo( forwardRef( ( props, ref ) => {
+export const Typography = memo(forwardRef((props, ref) => {
 	const {
 		className,
 		attrNameTemplate,
@@ -47,71 +47,71 @@ export const Typography = memo( forwardRef( ( props, ref ) => {
 		...propsToPass
 	} = props
 
-	const getAttrName = getAttrNameFunction( attrNameTemplate )
+	const getAttrName = getAttrNameFunction(attrNameTemplate)
 	const setAttributes = useBlockSetAttributesContext()
 
 	const {
 		textTag,
 		text,
 		fontFamily,
-	} = useBlockAttributesContext( attributes => {
-		const getAttrName = getAttrNameFunction( attrNameTemplate )
+	} = useBlockAttributesContext(attributes => {
+		const getAttrName = getAttrNameFunction(attrNameTemplate)
 		return {
-			textTag: attributes[ getAttrName( 'textTag' ) ],
-			text: attributes[ getAttrName( 'text' ) ],
-			fontFamily: attributes[ getAttrName( 'fontFamily' ) ],
+			textTag: attributes[getAttrName('textTag')],
+			text: attributes[getAttrName('text')],
+			fontFamily: attributes[getAttrName('fontFamily')],
 		}
-	} )
+	})
 
-	const TagName = ( tagName === null ? textTag : tagName ) || defaultTag || 'p'
+	const TagName = (tagName === null ? textTag : tagName) || defaultTag || 'p'
 	const value = _value === null ? text : _value
-	const onChange = _onChange === null ? value => setAttributes( { [ getAttrName( 'text' ) ]: value } ) : _onChange
+	const onChange = _onChange === null ? value => setAttributes({ [getAttrName('text')]: value }) : _onChange
 
-	const [ debouncedText, setDebouncedText ] = useState( value )
+	const [debouncedText, setDebouncedText] = useState(value)
 
 	// Load any Google Fonts used.
-	useFontLoader( fontFamily )
+	useFontLoader(fontFamily)
 
 	// If value was changed externally.
-	useEffect( () => {
-		if ( value !== debouncedText ) {
-			setDebouncedText( value )
+	useEffect(() => {
+		if (value !== debouncedText) {
+			setDebouncedText(value)
 		}
-	}, [ value ] )
+	}, [value])
 
-	useEffect( () => {
+	useEffect(() => {
 		let timeout
-		if ( value !== debouncedText ) {
-			timeout = setTimeout( () => {
-				onChange( debouncedText || defaultValue )
-			}, 300 )
+		if (value !== debouncedText) {
+			timeout = setTimeout(() => {
+				onChange(debouncedText || defaultValue)
+			}, 300)
 		}
 
-		return () => clearTimeout( timeout )
-	}, [ debouncedText, onChange ] ) // Don't include `value` in the dependency list because it will cause a double triggering of the `onChange`.
+		return () => clearTimeout(timeout)
+	}, [debouncedText, onChange]) // Don't include `value` in the dependency list because it will cause a double triggering of the `onChange`.
 
-	const dynamicContentText = useDynamicContent( debouncedText )
+	const dynamicContentText = useDynamicContent(debouncedText)
 
-	if ( ! editable ) {
-		return <TagName className={ className }>{ dynamicContentText }</TagName>
+	if (!editable) {
+		return <TagName className={className}>{dynamicContentText}</TagName>
 	}
 
 	return (
 		<RichText
-			identifier={ identifier }
-			className={ className }
-			tagName={ TagName }
-			value={ dynamicContentText }
-			onChange={ setDebouncedText }
-			ref={ ref }
-			withoutInteractiveFormatting={ withoutInteractiveFormatting }
-			allowedFormats={ allowedFormats }
-			{ ...propsToPass }
+			identifier={identifier}
+			className={className}
+			tagName={TagName}
+			value={dynamicContentText}
+			onChange={setDebouncedText}
+			ref={ref}
+			withoutInteractiveFormatting={withoutInteractiveFormatting}
+			allowedFormats={allowedFormats}
+		// {...propsToPass}
 		>
-			{ children }
+			{children}
 		</RichText>
 	)
-} ) )
+}))
 
 Typography.defaultProps = {
 	attrNameTemplate: '%s',
@@ -136,18 +136,18 @@ Typography.Content = props => {
 	} = props
 
 	const getAttribute = _attrName => {
-		const attrName = getAttrName( attrNameTemplate, _attrName )
-		return attributes[ getAttributeName( attrName ) ]
+		const attrName = getAttrName(attrNameTemplate, _attrName)
+		return attributes[getAttributeName(attrName)]
 	}
 
 	return (
 		<RichText.Content
-			className={ className }
-			tagName={ ( tagName === null ? getAttribute( 'textTag' ) : tagName ) || defaultTag }
-			value={ value === null ? getAttribute( 'text' ) : value }
-			{ ...rest }
+			className={className}
+			tagName={(tagName === null ? getAttribute('textTag') : tagName) || defaultTag}
+			value={value === null ? getAttribute('text') : value}
+			{...rest}
 		>
-			{ children }
+			{children}
 		</RichText.Content>
 	)
 }

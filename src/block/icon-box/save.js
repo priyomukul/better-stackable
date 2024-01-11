@@ -46,8 +46,8 @@ export const Save = props => {
 		'stk-block-icon-box__content',
 	] )
 
-	return (
-		<BlockDiv.Content
+	return ( <InnerBlocks.Content />
+		/*<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
 			version={ props.version }
@@ -62,7 +62,7 @@ export const Save = props => {
 				<InnerBlocks.Content />
 				<BlockLink.Content attributes={ attributes } />
 			</ContainerDiv.Content>
-		</BlockDiv.Content>
+		</BlockDiv.Content>*/
 	)
 }
 

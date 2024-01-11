@@ -85,6 +85,7 @@ if ( ! function_exists( 'stackable_get_stk_wrapper_block_folders_metadata' ) ) {
 			'button-group',
 			'call-to-action',
 			'card',
+			'carousel',
 			'column',
 			'columns',
 			'expand',

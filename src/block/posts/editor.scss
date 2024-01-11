@@ -1,7 +1,10 @@
 [data-type="stackable/posts"] .stk-block-posts.is-style-list .stk-img-wrapper {
-	margin: 0 !important;
+	margin: 0;
 }
 
 .stk-block-posts.is-style-list .stk-img-wrapper {
 	width: 50% !important;
+}
+.stk-block-posts .stk-img-wrapper[class*=' stl-rounded-'] * {
+	border-radius: inherit !important;
 }

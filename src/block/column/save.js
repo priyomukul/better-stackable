@@ -58,7 +58,9 @@ export const Save = props => {
 		props
 	)
 
-	return (
+	return ( <InnerBlocks.Content />
+		/*
+		// Still keeping this for issue check
 		<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
@@ -76,7 +78,7 @@ export const Save = props => {
 				</div>
 				<BlockLink.Content attributes={ attributes } />
 			</ContainerDiv.Content>
-		</BlockDiv.Content>
+		</BlockDiv.Content>*/
 	)
 }
 

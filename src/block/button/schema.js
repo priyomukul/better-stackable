@@ -44,6 +44,29 @@ export const attributes = ( version = VERSION ) => {
 				type: 'string',
 				default: '',
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					fontSize:{
+						type: 'text'
+					},
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					buttonBorderRadius2:{
+						type: 'element'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					buttonPadding: {
+						type: 'element',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',

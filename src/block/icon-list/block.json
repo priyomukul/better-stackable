@@ -4,7 +4,12 @@
 	"title": "Icon List",
 	"description": "An unordered list with icons. You can use this as a list of features or benefits.",
 	"category": "stackable",
-	"usesContext": [ "postId", "postType", "queryId" , "stackable/innerBlockOrientation" ],
+	"usesContext": [
+		"postId",
+		"postType",
+		"queryId",
+		"stackable/innerBlockOrientation"
+	],
 	"keywords": [
 		"Checklist",
 		"Bullets",
@@ -12,5 +17,6 @@
 	],
 	"textdomain": "stackable-ultimate-gutenberg-blocks",
 	"stk-type": "essential",
-	"stk-demo": "https://wpstackable.com/icon-list-block/?utm_source=welcome&utm_medium=settings&utm_campaign=view_demo&utm_content=demolink"
+	"stk-demo": "https://wpstackable.com/icon-list-block/?utm_source=welcome&utm_medium=settings&utm_campaign=view_demo&utm_content=demolink",
+	"render": "file:./render.php"
 }

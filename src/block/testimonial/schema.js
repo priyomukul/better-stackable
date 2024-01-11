@@ -20,25 +20,25 @@ import {
 import { AttributeObject } from '~stackable/util'
 import { version as VERSION } from 'stackable'
 
-export const attributes = ( version = VERSION ) => {
+export const attributes = (version = VERSION) => {
 	const attrObject = new AttributeObject()
 
-	BlockDiv.addAttributes( attrObject )
-	Style.addAttributes( attrObject )
-	MarginBottom.addAttributes( attrObject )
-	ContainerDiv.addAttributes( attrObject )
-	Alignment.addAttributes( attrObject )
-	Advanced.addAttributes( attrObject )
-	Transform.addAttributes( attrObject )
-	EffectsAnimations.addAttributes( attrObject )
-	CustomAttributes.addAttributes( attrObject )
-	ConditionalDisplay.addAttributes( attrObject )
-	CustomCSS.addAttributes( attrObject )
-	Responsive.addAttributes( attrObject )
-	BlockLink.addAttributes( attrObject )
-	ContentAlign.addAttributes( attrObject )
+	BlockDiv.addAttributes(attrObject)
+	Style.addAttributes(attrObject)
+	MarginBottom.addAttributes(attrObject)
+	ContainerDiv.addAttributes(attrObject)
+	Alignment.addAttributes(attrObject)
+	Advanced.addAttributes(attrObject)
+	Transform.addAttributes(attrObject)
+	EffectsAnimations.addAttributes(attrObject)
+	CustomAttributes.addAttributes(attrObject)
+	ConditionalDisplay.addAttributes(attrObject)
+	CustomCSS.addAttributes(attrObject)
+	Responsive.addAttributes(attrObject)
+	BlockLink.addAttributes(attrObject)
+	ContentAlign.addAttributes(attrObject)
 
-	attrObject.add( {
+	attrObject.add({
 		attributes: {
 			// This keeps track of the version of the block, just when we need
 			// to force update the block with new attributes and the save markup
@@ -49,29 +49,49 @@ export const attributes = ( version = VERSION ) => {
 				attribute: 'data-v',
 				default: undefined,
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					containerPadding: {
+						type: 'container'
+					},
+					containerBorderRadius2: {
+						type: 'container'
+					}
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	attrObject.addDefaultValues( {
+	attrObject.addDefaultValues({
 		attributes: {
 			hasContainer: true,
 			contentAlign: 'center',
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	attrObject.addDefaultValues( {
+	attrObject.addDefaultValues({
 		attributes: {
 			version: 2,
 		},
 		versionAdded: '3.8.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	return attrObject.getMerged( version )
+	return attrObject.getMerged(version)
 }
 
-export default attributes( VERSION )
+export default attributes(VERSION)

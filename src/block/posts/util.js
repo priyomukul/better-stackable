@@ -9,7 +9,7 @@ import {
 	Image,
 	ContainerDiv,
 	Typography,
-	getTypographyClasses,
+	getTypographyClasses, getGeneratedClasses,
 } from '~stackable/block-components'
 import { getBlockStyle } from '~stackable/hooks'
 
@@ -89,29 +89,34 @@ export const generateRenderPostItem = ( attributes, { isHovered } ) => {
 
 	const titleClassNames = classnames(
 		'stk-block-posts__title',
-		getTypographyClasses( attributes, 'title%s' )
+		getTypographyClasses( attributes, 'title%s' ),
+		getGeneratedClasses(attributes, 'title')
 	)
 
 	const categoryClassNames = classnames(
 		'stk-block-posts__category',
 		'stk-subtitle',
-		getTypographyClasses( attributes, 'category%s' )
+		getTypographyClasses( attributes, 'category%s' ),
+		getGeneratedClasses(attributes, 'category')
 	)
 
 	const excerptClassNames = classnames(
 		'stk-block-posts__excerpt',
-		getTypographyClasses( attributes, 'excerpt%s' )
+		getTypographyClasses( attributes, 'excerpt%s' ),
+		getGeneratedClasses(attributes, 'excerpt')
 	)
 
 	const metaClassNames = classnames(
 		'stk-block-posts__meta',
 		'stk-subtitle',
-		getTypographyClasses( attributes, 'meta%s' )
+		getTypographyClasses( attributes, 'meta%s' ),
+		getGeneratedClasses(attributes, 'meta')
 	)
 
 	const readmoreClassNames = classnames(
 		'stk-block-posts__readmore',
-		getTypographyClasses( attributes, 'readmore%s' )
+		getTypographyClasses( attributes, 'readmore%s' ),
+		getGeneratedClasses(attributes, 'readmore')
 	)
 
 	return ( post, idx ) => {
@@ -150,7 +155,7 @@ export const generateRenderPostItem = ( attributes, { isHovered } ) => {
 					? 'top'
 					: 'bottom'
 				}
-				className="stk-block-posts__image-link"
+				className={getGeneratedClasses(attributes, 'image', 'stk-block-posts__image-link')}
 			/>
 		)
 
@@ -266,7 +271,7 @@ export const generateRenderPostItem = ( attributes, { isHovered } ) => {
 
 		return (
 			<div className={ itemClassNames } key={ idx }>
-				<ContainerDiv>
+				<ContainerDiv className={getGeneratedClasses(attributes, 'container')}>
 					{ output }
 				</ContainerDiv>
 			</div>
@@ -293,44 +298,49 @@ generateRenderPostItem.save = ( attributes, version = VERSION ) => {
 	const style = getBlockStyle( variations, className )
 
 	const itemClassNames = classnames( [
-		'stk-block-posts__item',
+		'stk-block-posts__item'
 	] )
 
 	const titleClassNames = classnames(
 		'stk-block-posts__title',
-		getTypographyClasses( attributes, 'title%s' )
+		getTypographyClasses( attributes, 'title%s' ),
+		getGeneratedClasses(attributes, 'title')
 	)
 
 	const categoryClassNames = classnames(
 		'stk-block-posts__category',
 		'stk-subtitle',
-		getTypographyClasses( attributes, 'category%s' )
+		getTypographyClasses( attributes, 'category%s' ),
+		getGeneratedClasses(attributes, 'category')
 	)
 
 	const excerptClassNames = classnames(
 		'stk-block-posts__excerpt',
-		getTypographyClasses( attributes, 'excerpt%s' )
+		getTypographyClasses( attributes, 'excerpt%s' ),
+		getGeneratedClasses(attributes, 'excerpt')
 	)
 
 	const metaClassNames = classnames(
 		'stk-block-posts__meta',
 		'stk-subtitle',
-		getTypographyClasses( attributes, 'meta%s' )
+		getTypographyClasses( attributes, 'meta%s' ),
+	  getGeneratedClasses(attributes, 'meta')
 	)
 
 	const readmoreClassNames = classnames(
 		'stk-block-posts__readmore',
-		getTypographyClasses( attributes, 'readmore%s' )
+		getTypographyClasses( attributes, 'readmore%s' ),
+		getGeneratedClasses(attributes, 'readmore')
 	)
 
 	// attributes property was added after plugin version 3.6.3
 	let featuredImage = <Image.Content attributes={ attributes } />
+
 	featuredImage = applyFilters( 'stackable.posts.feature-image', featuredImage, version )
 
 	if ( imageHasLink ) {
-		featuredImage = <a href="!#postLink!#" className="stk-block-posts__image-link">{ featuredImage }</a>
+		featuredImage = <a href="!#postLink!#" className={getGeneratedClasses(attributes, 'image', 'stk-block-posts__image-link')}>{ featuredImage }</a>
 	}
-
 	const title = (
 		<Typography.Content
 			defaultTag="h3"
@@ -381,9 +391,8 @@ generateRenderPostItem.save = ( attributes, version = VERSION ) => {
 			{ ...applyFilters( 'stackable.posts.title.readmore-content', {}, version ) }
 		/>
 	)
-
 	const meta = ( authorShow || dateShow || commentsShow ) && (
-		<aside className={ metaClassNames }>
+		<aside className={metaClassNames}>
 			{ authorShow && author }
 			{ authorShow && author && ( ( dateShow && date ) || ( commentsShow && comments ) ) && separator }
 			{ dateShow && date }
@@ -426,7 +435,7 @@ generateRenderPostItem.save = ( attributes, version = VERSION ) => {
 		<>
 			{ '<!–- /stk-start:posts/template –->' }
 			<div className={ itemClassNames }>
-				<ContainerDiv.Content attributes={ attributes }>
+				<ContainerDiv.Content attributes={ attributes } className={getGeneratedClasses(attributes, 'container')}>
 					{ output }
 				</ContainerDiv.Content>
 			</div>

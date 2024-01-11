@@ -89,7 +89,7 @@ const postsAttributes = {
 	},
 	excludeCurrentPost: {
 		type: 'boolean',
-		default: '',
+		default: true,
 	},
 	postInclude: {
 		type: 'string',
@@ -309,6 +309,87 @@ export const attributes = ( version = VERSION ) => {
 			version: 2,
 		},
 		versionAdded: '3.8.0',
+		versionDeprecated: '',
+	} )
+
+	attrObject.add( {
+		attributes: {
+			contentAlign: {
+				stkResponsive: true,
+				type: 'string',
+				default: '',
+			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					imageSpacing: {
+						type: 'image'
+					},
+					titleSpacing: {
+						type: 'title'
+					},
+					categorySpacing: {
+						type: 'category'
+					},
+					excerptSpacing: {
+						type: 'excerpt'
+					},
+					metaSpacing: {
+						type: 'meta'
+					},
+					readmoreSpacing: {
+						type: 'readmore'
+					},
+					fontSize:{
+						type: 'text'
+					},
+					titleFontSize: {
+						type: 'title'
+					},
+					categoryFontSize: {
+						type: 'category'
+					},
+					excerptFontSize: {
+						type: 'excerpt'
+					},
+					metaFontSize: {
+						type: 'meta'
+					},
+					readmoreFontSize: {
+						type: 'readmore'
+					},
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+
+					imageBorderRadius:{
+						type: 'image'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					containerPadding: {
+						type: 'container',
+						desktop: {
+							value: 'xl',
+							class: 'stl-p-6'
+						},
+						tablet: {
+							value: 'xl',
+							class: 'md:stl-p-6'
+						},
+						mobile: {
+							value: 'xl',
+							class: 'sm:stl-p-6'
+						}
+					},
+				},
+			},
+		},
+		versionAdded: '3.2.0',
 		versionDeprecated: '',
 	} )
 

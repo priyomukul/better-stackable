@@ -48,6 +48,7 @@ export const Edit = props => {
 		onChangeIcon,
 		iconGapPlaceholder = '0',
 		attrNameTemplate,
+		disableColorPicker
 	} = props
 
 	const attributeName = getAttrNameFunction( attrNameTemplate )
@@ -100,7 +101,7 @@ export const Edit = props => {
 
 			{ props.children }
 
-			{ showProNotice && ( hasMultiColor || hasGradient ) && <ProControlButton type="icon-colors" /> }
+			{/*{ showProNotice && ( hasMultiColor || hasGradient ) && <ProControlButton type="icon-colors" /> }*/}
 
 			{ applyFilters( 'stackable.block-component.icon.after', null ) }
 
@@ -121,6 +122,7 @@ export const Edit = props => {
 							label={ __( 'Icon Color', i18n ) }
 							attribute={ attributeName( 'iconColor1' ) }
 							hover={ hover }
+							disableColorPicker={disableColorPicker}
 						/>
 					) }
 					{ PremiumColorControls && <PremiumColorControls { ...props } /> }
@@ -200,6 +202,7 @@ export const Edit = props => {
 					label={ __( 'Shape Color', i18n ) }
 					attribute="shapeColor1"
 					hover="all"
+					disableColorPicker={disableColorPicker}
 				/>
 			) }
 			{ PremiumShapeColorControls && <PremiumShapeColorControls { ...props } /> }
@@ -241,6 +244,7 @@ export const Edit = props => {
 				label={ __( 'Shape Outline Color', i18n ) }
 				attribute="shapeOutlineColor"
 				hover={ hover }
+				disableColorPicker={disableColorPicker}
 			/>
 		</>
 	)
@@ -260,7 +264,7 @@ export const Edit = props => {
 				: iconShapeControls
 			) }
 
-			{ props.hasBackgroundShape &&
+			{/*{ props.hasBackgroundShape &&
 				<>
 					{ showProNotice && ! isPro && (
 						wrapInPanels
@@ -270,7 +274,7 @@ export const Edit = props => {
 
 					{ PremiumBackgroundShapeControls && <PremiumBackgroundShapeControls { ...props } /> }
 				</>
-			}
+			}*/}
 		</Wrapper>
 	)
 }
@@ -289,4 +293,5 @@ Edit.defaultProps = {
 	defaultValue: '',
 	onChangeIcon: null,
 	attrNameTemplate: '%s',
+	disableColorPicker: false
 }

@@ -48,8 +48,8 @@ export const Save = props => {
 		'stk-inner-blocks',
 	] )
 
-	return (
-		<BlockDiv.Content
+	return ( <InnerBlocks.Content />
+		/*<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
 			version={ props.version }
@@ -65,7 +65,7 @@ export const Save = props => {
 					<InnerBlocks.Content />
 				</div>
 			</ContainerDiv.Content>
-		</BlockDiv.Content>
+		</BlockDiv.Content>*/
 	)
 }
 

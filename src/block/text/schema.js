@@ -18,23 +18,23 @@ import {
 	Transform,
 } from '~stackable/block-components'
 
-export const attributes = ( version = VERSION ) => {
+export const attributes = (version = VERSION) => {
 	const attrObject = new AttributeObject()
 
-	BlockDiv.addAttributes( attrObject )
-	Style.addAttributes( attrObject )
-	EffectsAnimations.addAttributes( attrObject )
-	CustomAttributes.addAttributes( attrObject )
-	CustomCSS.addAttributes( attrObject )
-	Responsive.addAttributes( attrObject )
-	ConditionalDisplay.addAttributes( attrObject )
-	Advanced.addAttributes( attrObject )
-	Transform.addAttributes( attrObject )
-	Alignment.addAttributes( attrObject )
-	MarginBottom.addAttributes( attrObject )
-	Typography.addAttributes( attrObject, '.stk-block-text__text', { hasTextTag: false } )
+	BlockDiv.addAttributes(attrObject)
+	Style.addAttributes(attrObject)
+	EffectsAnimations.addAttributes(attrObject)
+	CustomAttributes.addAttributes(attrObject)
+	CustomCSS.addAttributes(attrObject)
+	Responsive.addAttributes(attrObject)
+	ConditionalDisplay.addAttributes(attrObject)
+	Advanced.addAttributes(attrObject)
+	Transform.addAttributes(attrObject)
+	Alignment.addAttributes(attrObject)
+	MarginBottom.addAttributes(attrObject)
+	Typography.addAttributes(attrObject, '.stk-block-text__text', { hasTextTag: false })
 
-	attrObject.add( {
+	attrObject.add({
 		attributes: {
 			innerTextTag: { // The inner text `p` tag can be overridden.
 				type: 'string',
@@ -50,12 +50,33 @@ export const attributes = ( version = VERSION ) => {
 				type: 'number',
 				default: '',
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					fontSize: {
+						type: 'element',
+						desktop: {
+							value: 'md',
+							class: 'stl-text-base'
+						}
+					},
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	return attrObject.getMerged( version )
+	return attrObject.getMerged(version)
 }
 
-export default attributes( VERSION )
+export default attributes(VERSION)

@@ -215,6 +215,9 @@
 // Headings, Subtitle, and Text.
 // This removes the normal margins of headings and paragraphs, so we can add our own.
 .stk-block {
+	.stk-block-heading__text{
+		font-weight: 700;
+	}
 	.stk-block-heading__text,
 	.stk-block-text__text,
 	.stk-block-subtitle__text {

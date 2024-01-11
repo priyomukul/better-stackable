@@ -52,6 +52,26 @@ export const attributes = ( version = VERSION ) => {
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
 	} )
+	attrObject.add( {
+		attributes: {
+			generatedClasses:{
+				type: 'object',
+				default:{
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				}
+			}
+		},
+		versionAdded: '3.1.0',
+		versionDeprecated: '',
+	} )
 
 	attrObject.add( {
 		attributes: {

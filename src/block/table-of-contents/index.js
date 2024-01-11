@@ -68,7 +68,7 @@ export const settings = {
 
 	deprecated,
 	edit,
-	save,
+	save: () => null,
 }
 
 // When saving block styles, don't save the headings detected by the block.

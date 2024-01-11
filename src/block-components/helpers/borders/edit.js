@@ -8,6 +8,8 @@ import {
 	 ShadowControl,
 	 FourRangeControl,
 } from '~stackable/components'
+import ConditionalControl from "~stackable/components/conditional-control";
+import {BORDER_RADIUS} from "~stackable/config/constants";
 
 /**
  * WordPress dependencies
@@ -41,6 +43,7 @@ export const BorderControls = props => {
 		getAttribute,
 		getAttrName,
 		updateAttributes,
+		getAttributes,
 	} = useAttributeEditHandlers( props.attrNameTemplate )
 
 	const borderTypeValue = getAttribute( 'borderType' ) || props.borderTypeValue
@@ -79,23 +82,33 @@ export const BorderControls = props => {
 					label={ __( 'Border Color', i18n ) }
 					attribute={ getAttrName( 'borderColor' ) }
 					hover="all"
+					disableColorPicker={props.disableColorPicker}
 				/>
 			}
 			{ props.hasBorderRadius &&
-				<FourRangeControl
-					label={ __( 'Border Radius', i18n ) }
-					attribute={ getAttrName( 'borderRadius2' ) }
-					responsive="all"
-					hover={ props.hasBorderRadiusHover }
-					helpTooltip={ {
-						video: 'general-border-radius',
-						description: __( 'Adjusts the radius of block corners to make them more rounded', i18n ),
-					} }
-					min={ 0 }
-					isCorner={ true }
-					sliderMax={ props.borderSliderMax }
-					placeholder={ props.borderRadiusPlaceholder }
-				/>
+				<ConditionalControl
+					options={BORDER_RADIUS}
+					isEnabled={props.hasOptions}
+					label={__('Border Radius', i18n)}
+					attributeName={getAttrName( 'borderRadius2' )}
+					saveAttr={getAttributes().generatedClasses}
+					saveAttrName={'generatedClasses'}
+				>
+					<FourRangeControl
+						label={ __( 'Border Radius', i18n ) }
+						attribute={ getAttrName( 'borderRadius2' ) }
+						responsive="all"
+						hover={ props.hasBorderRadiusHover }
+						helpTooltip={ {
+							video: 'general-border-radius',
+							description: __( 'Adjusts the radius of block corners to make them more rounded', i18n ),
+						} }
+						min={ 0 }
+						isCorner={ true }
+						sliderMax={ props.borderSliderMax }
+						placeholder={ props.borderRadiusPlaceholder }
+					/>
+				</ConditionalControl>
 			}
 			<ShadowControl
 				label={ __( 'Shadow / Outline', i18n ) }
@@ -115,4 +128,5 @@ BorderControls.defaultProps = {
 	hasBorderRadiusHover: true,
 	borderSelector: null,
 	borderSliderMax: 50,
+	disableColorPicker: false
 }

@@ -30,8 +30,9 @@ import { __ } from '@wordpress/i18n'
 export const Edit = props => {
 	const {
 		hasContentVerticalAlign = false,
+		hasOptions = false,
+		disableColorPicker = false
 	} = props
-
 	const hasContainer = useBlockAttributesContext( attributes => attributes.hasContainer )
 	const setAttributes = useBlockSetAttributesContext()
 
@@ -60,6 +61,7 @@ export const Edit = props => {
 							selector: '.stk-%s-container',
 							highlight: 'outline',
 						} }
+						hasOptions={hasOptions}
 					/>
 					<SizeControls.Spacing
 						attrNameTemplate="container%s"
@@ -68,6 +70,7 @@ export const Edit = props => {
 						visualGuide={ {
 							selector: '.stk-%s-container',
 						} }
+						hasOptions={hasOptions}
 					/>
 				</PanelAdvancedSettings>
 			</InspectorBlockControls>
@@ -91,6 +94,8 @@ export const Edit = props => {
 					>
 						<BorderControls
 							attrNameTemplate="container%s"
+							hasOptions={hasOptions}
+							disableColorPicker={disableColorPicker}
 						/>
 					</PanelAdvancedSettings>
 				</InspectorStyleControls>

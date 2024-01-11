@@ -23,7 +23,6 @@ if ( ! function_exists( 'generate_render_item_from_stackable_posts_block' ) ) {
 		$readmore_text = $attributes['readmoreText'];
 		$meta_separator = $attributes['metaSeparator'];
 		$category_highlighted = $attributes['categoryHighlighted'];
-
 		$new_template = $template;
 		// Featured Image.
 		$featured_image = '';
@@ -138,7 +137,7 @@ if ( ! function_exists( 'generate_post_query_from_stackable_posts_block' ) ) {
 	 * Query generator for 'stackable/posts' block.
 	 *
 	 * @since 3.0.0
-	 * @param WP_Query | array $block_or_attribute
+	 * @param WP_Block | array $block_or_attribute
 	 * @param string | number $page
 	 *
 	 * @return array post query which will be used for WP_Query.
@@ -203,7 +202,6 @@ if ( ! class_exists( 'Stackable_Posts_Block' ) ) {
 		);
 
 		function __construct() {
-			add_filter( 'stackable.register-blocks.options', array( $this, 'register_block_type' ), 1, 3 );
 			add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		}
 
@@ -344,26 +342,6 @@ if ( ! class_exists( 'Stackable_Posts_Block' ) ) {
 		}
 
 		/**
-		 * Modify the register_options of the
-		 * posts block.
-		 *
-		 * @param array $register_options
-		 * @param string $name
-		 * @param array $metadata
-		 *
-		 * @return array new register options.
-		 */
-		public function register_block_type( $register_options, $name, $metadata ) {
-			if ( $name !== 'stackable/posts' ) {
-				return $register_options;
-			}
-
-			$register_options[ 'render_callback' ] = array( $this, 'render_callback' );
-
-			return $register_options;
-		}
-
-		/**
 		 * The dynamic render method of the posts block.
 		 *
 		 * @param array $attributes
@@ -469,7 +447,6 @@ if ( ! class_exists( 'Stackable_Posts_Block' ) ) {
 
 			if ( empty( $excerpt ) ) {
 				$max_excerpt = 100; // WP default is 55.
-
 				// If there's post content given to us, trim it and use that.
 				if ( ! empty( $post['post_content'] ) ) {
 					$excerpt = apply_filters( 'the_excerpt', wp_trim_words( $post['post_content'], $max_excerpt ) );

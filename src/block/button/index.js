@@ -5,7 +5,6 @@
  * Internal dependencies
  */
 import edit from './edit'
-import save from './save'
 import example from './example'
 import schema from './schema'
 import metadata from './block.json'
@@ -34,5 +33,5 @@ export const settings = {
 	deprecated,
 	example,
 	edit,
-	save,
+	save : () => null,
 }

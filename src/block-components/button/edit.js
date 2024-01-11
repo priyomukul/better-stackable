@@ -30,6 +30,8 @@ import { BorderControls as _BorderControls } from '../helpers/borders'
 import { Link as _Link } from '../link'
 import { Icon as _Icon } from '../icon'
 import { applyFilters } from '@wordpress/hooks'
+import ConditionalControl from "~stackable/components/conditional-control";
+import {PADDINGS} from "~stackable/config/constants";
 
 export const Icon = props => (
 	<_Icon.InspectorControls
@@ -40,6 +42,7 @@ export const Icon = props => (
 		hasIconGap={ props.hasIconGap }
 		hasIconPosition={ props.hasIconPosition }
 		defaultValue={ props.defaultValue }
+		disableColorPicker={props.disableColorPicker}
 	/>
 )
 
@@ -48,6 +51,7 @@ Icon.defaultProps = {
 	hasIconPosition: true,
 	hasColor: true,
 	defaultValue: '',
+	disableColorPicker: false,
 }
 
 export const Link = _Link.InspectorControls
@@ -108,10 +112,11 @@ export const ColorsControls = props => {
 		hasIconColor,
 		hasTextColor,
 		attrNameTemplate = 'button%s',
+		disableColorPicker = false
 	} = props
 
 	const {
-		getAttrName,
+		getAttrName
 	} = useAttributeEditHandlers( attrNameTemplate )
 
 	const buttonBackgroundColorType = useBlockAttributesContext( attributes => {
@@ -138,6 +143,7 @@ export const ColorsControls = props => {
 			attribute={ getAttrName( 'backgroundColor' ) }
 			hover="all"
 			isGradient={ buttonBackgroundColorType === 'gradient' }
+			disableColorPicker={disableColorPicker}
 		/>
 
 		{ hasTextColor && (
@@ -145,6 +151,7 @@ export const ColorsControls = props => {
 				label={ __( 'Text Color', i18n ) }
 				attribute="textColor1"
 				hover="all"
+				disableColorPicker={disableColorPicker}
 			/>
 		) }
 
@@ -153,6 +160,7 @@ export const ColorsControls = props => {
 				label={ __( 'Icon Color', i18n ) }
 				attribute="iconColor1"
 				hover="all"
+				disableColorPicker={disableColorPicker}
 			/>
 		) }
 	</> )
@@ -179,10 +187,12 @@ Colors.defaultProps = {
 const SizeControls = props => {
 	const {
 		attrNameTemplate = 'button%s',
+		hasOptions
 	} = props
 
 	const {
 		getAttrName,
+		getAttributes
 	} = useAttributeEditHandlers( attrNameTemplate )
 
 	return ( <>
@@ -209,21 +219,31 @@ const SizeControls = props => {
 				placeholder=""
 			/>
 		) }
-		<FourRangeControl
-			label={ __( 'Button Padding', i18n ) }
-			units={ [ 'px', '%' ] }
-			responsive="all"
-			defaultLocked={ true }
-			attribute={ getAttrName( 'padding' ) }
-			sliderMin={ [ 0, 0 ] }
-			sliderMax={ [ 40, 100 ] }
-			vhMode={ true }
-			helpTooltip={ {
-				// TODO: Add a working video
-				title: __( 'Button padding', i18n ),
-				description: __( 'Adjusts the space between the button text and button borders', i18n ),
-			} }
-		/>
+		<ConditionalControl
+			label={__('Button Padding', i18n)}
+			isEnabled={props.hasOptions}
+			attributeName={getAttrName( 'padding' )}
+			saveAttr={getAttributes().generatedClasses}
+			saveAttrName={'generatedClasses'}
+			options={PADDINGS}
+		>
+			<FourRangeControl
+				label={ __( 'Button Padding', i18n ) }
+				units={ [ 'px', '%' ] }
+				responsive="all"
+				defaultLocked={ true }
+				attribute={ getAttrName( 'padding' ) }
+				sliderMin={ [ 0, 0 ] }
+				sliderMax={ [ 40, 100 ] }
+				vhMode={ true }
+				helpTooltip={ {
+					// TODO: Add a working video
+					title: __( 'Button padding', i18n ),
+					description: __( 'Adjusts the space between the button text and button borders', i18n ),
+				} }
+			/>
+		</ConditionalControl>
+
 	</> )
 }
 
@@ -242,6 +262,7 @@ export const Size = props => {
 
 Size.defaultProps = {
 	hasWidth: false,
+	hasOptions: false
 }
 
 const BorderControls = props => {
@@ -274,6 +295,7 @@ export const Borders = props => {
 
 Borders.defaultProps = {
 	borderSelector: '',
+	hasOptions: false,
 }
 
 export const Edit = props => {
@@ -286,26 +308,31 @@ export const Edit = props => {
 		hasIconPosition,
 		borderRadiusPlaceholder,
 		hasFullWidth,
+		hasOptions,
+		disableColorPicker,
 		...propsToPass
 	} = props
 
 	const { parentBlock } = useBlockContext()
 
 	const enableLink = applyFilters( 'stackable.edit.button.enable-link', true, parentBlock )
-
 	return (
 		<>
 			{ ( hasLink && enableLink ) && <Link /> }
-			<Colors hasTextColor={ hasTextColor } { ...propsToPass } />
-			<Size hasFullWidth={ hasFullWidth } />
+			<Colors hasTextColor={ hasTextColor } { ...propsToPass } disableColorPicker={disableColorPicker}/>
+			<Size hasFullWidth={ hasFullWidth } hasOptions={hasOptions}/>
 			<Borders
 				borderSelector={ borderSelector }
 				placeholder={ borderRadiusPlaceholder }
+				hasOptions={hasOptions}
+				disableColorPicker={disableColorPicker}
 			/>
 			{ hasIcon && (
 				<Icon
 					hasIconGap={ hasIconGap }
 					hasIconPosition={ hasIconPosition }
+					hasOptoins={hasOptions}
+					disableColorPicker={disableColorPicker}
 				/>
 			) }
 		</>
@@ -320,6 +347,8 @@ Edit.defaultProps = {
 	hasIconGap: true,
 	hasIconPosition: true,
 	hasFullWidth: false,
+	hasOptions: false,
+	disableColorPicker: false
 }
 
 Edit.Link = Link

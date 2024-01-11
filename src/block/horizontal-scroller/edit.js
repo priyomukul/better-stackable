@@ -36,6 +36,8 @@ import {
 	ConditionalDisplay,
 	Transform,
 	getContentAlignmentClasses,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 import { useBlockContext } from '~stackable/hooks'
 import {
@@ -89,6 +91,11 @@ const Edit = props => {
 	 ], getContentAlignmentClasses( props.attributes, 'horizontal-scroller' ), {
 		'stk--with-scrollbar': showScrollbar,
 	 } )
+
+	useCssGenerator( props.attributes, <BlockStyles.Content
+		version={VERSION}
+		attributes={props.attributes}	
+	/>)
 
 	 return (
 		 <>
@@ -196,7 +203,7 @@ const Edit = props => {
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
 
-					 <BlockDiv.InspectorControls />
+					 <BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					 <Advanced.InspectorControls />
 					 <Transform.InspectorControls />
 					 <EffectsAnimations.InspectorControls />
@@ -212,7 +219,7 @@ const Edit = props => {
 				 blockHoverClass={ props.blockHoverClass }
 				 clientId={ props.clientId }
 				 attributes={ props.attributes }
-				 className={ blockClassNames }
+				 className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			 >
 				 <BlockStyles
 					 version={ VERSION }

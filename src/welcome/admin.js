@@ -32,6 +32,8 @@ import AdminSelectSetting from '~stackable/components/admin-select-setting'
 import AdminToggleSetting from '~stackable/components/admin-toggle-setting'
 import AdminTextSetting from '~stackable/components/admin-text-setting'
 import { GettingStarted } from './getting-started'
+import { PanelAdvancedSettings } from '~stackable/components'
+import ColorPicker from '~stackable/plugins/global-settings/colors/admin-color-picker'
 
 const FREE_BLOCKS = importBlocks( require.context( '../block', true, /block\.json$/ ) )
 export const getAllBlocks = () => applyFilters( 'stackable.settings.blocks', FREE_BLOCKS )
@@ -550,6 +552,25 @@ const IconSettings = () => {
 	</Fragment>
 }
 
+const ColorSettings = () => {
+	const [colorSettings, setColorSettings] = useState([]);
+	useEffect(() => {
+		loadPromise.then( () => {
+			const settings = new models.Settings()
+			settings.fetch().then( response => {
+				if(response.stackable_global_colors){
+					setColorSettings(response.stackable_global_colors[0])
+				}
+			} )
+		})
+	}, []);
+	return(
+		<>
+			<ColorPicker label={ __( 'Global Colors', i18n ) } isAdminSettings={true} colorSettings={colorSettings}/>
+		</>
+	)
+}
+
 const AdditionalOptions = props => {
 	const [ helpTooltipsDisabled, setHelpTooltipsDisabled ] = useState( false )
 	const [ generateNativeGlobalColors, setGenerateNativeGlobalColors ] = useState( false )
@@ -731,6 +752,14 @@ domReady( () => {
 			document.querySelector( '.s-getting-started__body' )
 		).render(
 			<GettingStarted />
+		)
+	}
+
+	if ( document.querySelector( '.stl-color-settings' ) ) {
+		createRoot(
+			document.querySelector( '.stl-color-settings' )
+		).render(
+			<ColorSettings />
 		)
 	}
 } )

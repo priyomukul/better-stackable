@@ -49,6 +49,27 @@ export const attributes = ( version = VERSION ) => {
 				attribute: 'data-v',
 				default: undefined,
 			},
+
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					containerPadding: {
+						type: 'container'
+					},
+					containerBorderRadius2: {
+						type: 'container'
+					}
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',

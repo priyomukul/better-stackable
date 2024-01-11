@@ -44,6 +44,8 @@ import {
 	MarginBottom,
 	getAlignmentClasses,
 	Transform,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -278,6 +280,11 @@ const Edit = props => {
 
 	useGeneratedCss( props.attributes )
 
+	useCssGenerator( props.attributes, <TableOfContentsStyles.Content
+		version={VERSION}
+		attributes={props.attributes}
+	/>)
+
 	const { listType } = attributes
 	const tagName = isEmpty( listType ) || listType === 'unordered' || listType === 'none' ? 'ul' : 'ol'
 
@@ -295,6 +302,7 @@ const Edit = props => {
 	const tableOfContentsClassNames = classnames( [
 		'stk-table-of-contents__table',
 		textClasses,
+		getGeneratedClasses( props.attributes, 'list' )
 	] )
 
 	const titleClassNames = classnames(
@@ -442,6 +450,8 @@ const Edit = props => {
 						initialOpen={ false }
 						hasTextTag={ false }
 						hasTextContent={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
 					<Typography.InspectorControls
@@ -451,9 +461,11 @@ const Edit = props => {
 						initialOpen={ false }
 						hasToggle={ true }
 						hasTextTag={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -475,10 +487,10 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				{ attributes.titleShow && <Typography
-					className={ titleClassNames }
+					className={ getGeneratedClasses( props.attributes, 'title', titleClassNames) }
 					attrNameTemplate="title%s"
 					placeholder={ __( 'Title for This Block', i18n ) }
 				/> }

@@ -18,23 +18,51 @@ import {
 	Transform,
 } from '~stackable/block-components'
 
-export const attributes = ( version = VERSION ) => {
+export const attributes = (version = VERSION) => {
 	const attrObject = new AttributeObject()
 
-	BlockDiv.addAttributes( attrObject )
-	Style.addAttributes( attrObject )
-	EffectsAnimations.addAttributes( attrObject )
-	CustomAttributes.addAttributes( attrObject )
-	CustomCSS.addAttributes( attrObject )
-	Responsive.addAttributes( attrObject )
-	ConditionalDisplay.addAttributes( attrObject )
-	Advanced.addAttributes( attrObject )
-	Transform.addAttributes( attrObject )
-	Alignment.addAttributes( attrObject )
-	MarginBottom.addAttributes( attrObject )
-	Typography.addAttributes( attrObject, '.stk-block-subtitle__text', { hasTextTag: false } )
+	BlockDiv.addAttributes(attrObject)
+	Style.addAttributes(attrObject)
+	EffectsAnimations.addAttributes(attrObject)
+	CustomAttributes.addAttributes(attrObject)
+	CustomCSS.addAttributes(attrObject)
+	Responsive.addAttributes(attrObject)
+	ConditionalDisplay.addAttributes(attrObject)
+	Advanced.addAttributes(attrObject)
+	Transform.addAttributes(attrObject)
+	Alignment.addAttributes(attrObject)
+	MarginBottom.addAttributes(attrObject)
+	Typography.addAttributes(attrObject, '.stk-block-subtitle__text', { hasTextTag: false })
 
-	return attrObject.getMerged( version )
+	attrObject.add({
+		attributes: {
+			generatedClasses: {
+				type: 'object',
+				default: {
+					fontSize: {
+						type: 'element',
+						desktop: {
+							value: 'md',
+							class: 'stl-text-base'
+						}
+					},
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
+		},
+		versionAdded: '3.0.0',
+		versionDeprecated: '',
+	})
+
+	return attrObject.getMerged(version)
 }
 
-export default attributes( VERSION )
+export default attributes(VERSION)

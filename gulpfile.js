@@ -21,7 +21,8 @@ const autoprefixer = require( 'autoprefixer' ),
 	replace = require( 'gulp-replace' ),
 	sass = require( 'gulp-sass' )( require( 'sass' ) ),
 	sassVariables = require( 'gulp-sass-variables' ),
-	zip = require( 'gulp-zip' )
+	zip = require( 'gulp-zip' ),
+	tailwindcss = require('tailwindcss')
 
 // These files are the ones which will be included in the `package` task.
 const buildInclude = [
@@ -41,8 +42,14 @@ const buildInclude = [
 
 const postCSSOptions = [
 	autoprefixer(),
+	tailwindcss('./tailwind.config.js'),
 	mqpacker(), // Combine media query rules.
 	cssnano(), // Minify.
+]
+const postCSSOptionsForTailwind = [
+	autoprefixer(),
+	tailwindcss('./tailwind.config.js'),
+	cssnano(),
 ]
 
 const sassOptions = {
@@ -57,6 +64,7 @@ module.exports = {
 	buildInclude,
 	postCSSOptions,
 	sassOptions,
+	postCSSOptionsForTailwind
 }
 
 // Gets all directories recursively.
@@ -79,7 +87,7 @@ const getDirectories = function( dir, filelist ) {
 // Puts an index.php for all directories.
 gulp.task( 'generate-indexphp', function() {
 	const fs = require( 'fs' )
-	const dirs = getDirectories( path.resolve( __dirname, 'build/stackable' ) )
+	const dirs = getDirectories( path.resolve( __dirname, 'build/stellar-blocks' ) )
 	let g = gulp.src( path.resolve( __dirname, 'index.php' ) )
 	dirs.filter( dir => {
 		// Only do this for those who don't have an index.php yet.
@@ -358,6 +366,13 @@ gulp.task( 'style-editor-deprecated-v2', function() {
 		.pipe( gulp.dest( 'dist/deprecated/' ) )
 } )
 
+gulp.task( 'generate-classes', function() {
+	return gulp.src( [ path.resolve( __dirname, './src/class-styles.scss' ) ] )
+		.pipe( sass(sassOptions).on( 'error', sass.logError ) )
+		.pipe( postcss( postCSSOptionsForTailwind ) )
+		.pipe( gulp.dest( 'dist/' ) )
+} )
+
 gulp.task( 'style-deprecated-v2', function() {
 	return gulp.src( [
 		path.resolve( __dirname, './src/deprecated/v2/common.scss' ),
@@ -382,31 +397,36 @@ gulp.task( 'style-deprecated', gulp.parallel(
  * END deprecated build styles, we still build these
  ********************************************************************/
 
-gulp.task( 'build-process', gulp.parallel( 'style', 'style-editor', 'welcome-styles', 'style-deprecated', 'generate-translations-js' ) )
+gulp.task( 'build-process', gulp.parallel( 'style', 'style-editor', 'welcome-styles', 'style-deprecated', 'generate-translations-js', 'generate-classes' ) )
 
 gulp.task( 'build', gulp.series( 'build-process' ) )
 
 gulp.task( 'package', function() {
 	return gulp.src( buildInclude, { base: './' } )
-		.pipe( gulp.dest( 'build/stackable' ) )
+		.pipe( gulp.dest( 'build/stellar-blocks' ) )
 } )
 
 // Zips the build folder.
 gulp.task( 'zip', function() {
-	return gulp.src( 'build/stackable/**/*' )
-		.pipe( zip( 'stackable.zip' ) )
+	return gulp.src( 'build/stellar-blocks/**/*' )
+		.pipe( zip( 'stellar-blocks.zip' ) )
 		.pipe( gulp.dest( 'build' ) )
 } )
 
 const watchFuncs = ( basePath = '.' ) => {
 	gulp.watch(
 		[ `${ basePath }/src/**/*.scss` ],
-		gulp.parallel( [ 'style', 'style-editor', 'welcome-styles', 'style-deprecated' ] )
+		gulp.parallel( [ 'style', 'style-editor', 'welcome-styles', 'style-deprecated'] )
 	)
 
 	gulp.watch(
 		[ `${ basePath }/src/welcome/**/*.scss` ],
 		gulp.parallel( [ 'welcome-styles' ] )
+	)
+
+	gulp.watch(
+		[ `${ basePath }/src/**/*.js` ],
+		gulp.parallel( [ 'generate-classes'] )
 	)
 }
 

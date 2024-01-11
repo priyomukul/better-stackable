@@ -64,8 +64,8 @@ export const Save = props => {
 			},
 			`stk-${ attributes.uniqueId }-inner-blocks`,
 		], props ) )
-
-	return (
+		return <InnerBlocks.Content />;
+	/*return (
 		<BlockDiv.Content
 			className={ blockClassNames }
 			attributes={ attributes }
@@ -94,7 +94,7 @@ export const Save = props => {
 				<BlockLink.Content attributes={ attributes } />
 			</ContainerDiv.Content>
 		</BlockDiv.Content>
-	)
+	)*/
 }
 
 export default compose(

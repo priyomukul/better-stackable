@@ -30,7 +30,7 @@ import {
 	ConditionalDisplay,
 	Separator,
 	MarginBottom,
-	Transform,
+	Transform, getGeneratedClasses, useCssGenerator,
 } from '~stackable/block-components'
 
 /**
@@ -67,6 +67,8 @@ const Edit = props => {
 	const separatorClassNames = classnames( [
 		'stk-block-separator__inner',
 	] )
+
+	useCssGenerator(props.attributes, <SeparatorStyles.Content attributes={props.attributes} version={VERSION}/>);
 
 	return (
 		<>
@@ -106,7 +108,7 @@ const Edit = props => {
 						{ PremiumSeparatorControls && <PremiumSeparatorControls { ...props } /> }
 					</InspectorStyleControls>
 
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -128,7 +130,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames) }
 			>
 				<div className={ separatorClassNames }>
 					<Separator2

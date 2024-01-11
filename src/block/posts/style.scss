@@ -114,4 +114,13 @@
 		flex: 1;
 		box-sizing: border-box;
 	}
+	.stk-block-posts__image-link[class*=' stl-rounded-'] * {
+		border-radius: inherit !important;
+	}
+	.stk-block-posts__category .stk-button {
+		&+.stk-button{
+			margin-left: 4px;
+		}
+	}
 }
+

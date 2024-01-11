@@ -27,6 +27,7 @@ import {
 	InspectorStyleControls,
 	ControlSeparator,
 	ProControlButton,
+	ConditionalControl
 } from '~stackable/components'
 import {
 	useBlockStyle,
@@ -57,7 +58,7 @@ import {
 	MarginBottom,
 	Transform,
 	ContentAlign,
-	getContentAlignmentClasses,
+	getContentAlignmentClasses, getGeneratedClasses, useCssGenerator,
 } from '~stackable/block-components'
 import { getAttrName } from '~stackable/util'
 
@@ -71,6 +72,7 @@ import { InnerBlocks, useBlockEditContext } from '@wordpress/block-editor'
 import { useMemo, useEffect } from '@wordpress/element'
 import { useSelect } from '@wordpress/data'
 import { compose, useInstanceId } from '@wordpress/compose'
+import {SPACINGS} from "../../config/constants";
 
 const ALLOWED_INNER_BLOCKS = [
 	'stackable/load-more',
@@ -164,6 +166,57 @@ const Edit = props => {
 	const activeVariation = getActiveBlockVariation( name, attributes )
 	const defaultContentOrder = activeVariation?.attributes?.contentOrder || DEFAULT_ORDER
 
+	const SpacingControls = [
+		{
+			label: __( 'Featured Image', i18n ),
+			attribute: 'imageSpacing',
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+		{
+			label: __( 'Title', i18n ),
+			attribute:"titleSpacing",
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+		{
+			label: __( 'Category', i18n ),
+			attribute:"categorySpacing",
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+		{
+			label: __( 'Excerpt', i18n ),
+			attribute:"excerptSpacing",
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+		{
+			label: __( 'Meta', i18n ),
+			attribute:"metaSpacing",
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+		{
+			label: __( 'Read More Link', i18n ),
+			attribute:"readmoreSpacing",
+			responsive: 'all',
+			min: 0,
+			max: 100,
+			placeholder: ''
+		},
+	];
+	useCssGenerator(attributes, <PostsStyles.Content attributes={attributes} version={VERSION}/>)
 	return (
 		<>
 			{ isSelected && (
@@ -261,59 +314,29 @@ const Edit = props => {
 							title={ __( 'Spacing', i18n ) }
 							id="spacing"
 						>
-							<AdvancedRangeControl
-								label={ __( 'Featured Image', i18n ) }
-								attribute="imageSpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
-							<AdvancedRangeControl
-								label={ __( 'Title', i18n ) }
-								attribute="titleSpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
-							<AdvancedRangeControl
-								label={ __( 'Category', i18n ) }
-								attribute="categorySpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
-							<AdvancedRangeControl
-								label={ __( 'Excerpt', i18n ) }
-								attribute="excerptSpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
-							<AdvancedRangeControl
-								label={ __( 'Meta', i18n ) }
-								attribute="metaSpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
-							<AdvancedRangeControl
-								label={ __( 'Read More Link', i18n ) }
-								attribute="readmoreSpacing"
-								responsive="all"
-								min={ 0 }
-								sliderMax={ 100 }
-								placeholder=""
-							/>
+							{
+								SpacingControls.map((each,i ) => (
+									<ConditionalControl
+										index={i}
+										label={each.label}
+										options={SPACINGS}
+										isEnabled={true}
+										attributeName={each.attribute}
+										saveAttrName={'generatedClasses'}
+										saveAttr={attributes.generatedClasses}
+									>
+										<AdvancedRangeControl
+											{...each}
+											index={i}
+										/>
+									</ConditionalControl>
+								))
+							}
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
 
-					<BlockDiv.InspectorControls />
-					<ContainerDiv.InspectorControls hasContentVerticalAlign={ true } />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
+					<ContainerDiv.InspectorControls hasContentVerticalAlign={ true } hasOptions={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<Image.InspectorControls
@@ -327,6 +350,8 @@ const Edit = props => {
 						hasSelector={ false }
 						src={ focalPointPlaceholder }
 						hasToggle={ true }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
@@ -336,6 +361,8 @@ const Edit = props => {
 						hasTextContent={ false }
 						hasAlign={ true }
 						initialOpen={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
@@ -346,6 +373,8 @@ const Edit = props => {
 						hasAlign={ true }
 						hasTextTag={ false }
 						initialOpen={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
@@ -356,6 +385,8 @@ const Edit = props => {
 						hasTextContent={ false }
 						hasAlign={ true }
 						initialOpen={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
@@ -366,6 +397,8 @@ const Edit = props => {
 						hasTextContent={ false }
 						hasAlign={ true }
 						initialOpen={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<Typography.InspectorControls
 						{ ...props }
@@ -375,6 +408,8 @@ const Edit = props => {
 						hasToggle={ true }
 						hasAlign={ true }
 						initialOpen={ false }
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 					<EffectsAnimations.InspectorControls />
 					<CustomAttributes.InspectorControls />
@@ -407,7 +442,7 @@ const Edit = props => {
 					blockHoverClass={ props.blockHoverClass }
 					clientId={ props.clientId }
 					attributes={ props.attributes }
-					className={ blockClassNames }
+					className={ getGeneratedClasses(attributes, 'blockDiv', blockClassNames) }
 					enableVariationPicker={ true }
 				>
 					<div className={ wrapperClassNames } key={ `posts-wrapper-${ clientId }` }>

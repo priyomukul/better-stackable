@@ -41,6 +41,37 @@ export const attributes = ( version = VERSION ) => {
 		versionDeprecarted: '',
 	} )
 
+	attrObject.add({
+		attributes: {
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					buttonBorderRadius2:{
+						type: 'element',
+						desktop: {
+							value: 'full',
+							class: 'stl-rounded-full'
+						}
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					buttonPadding: {
+						type: 'element',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
+		},
+		versionAdded: '3.0.0',
+		versionDeprecated:''
+	});
+
 	return attrObject.getMerged( version )
 }
 

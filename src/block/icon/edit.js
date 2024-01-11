@@ -30,7 +30,7 @@ import {
 	MarginBottom,
 	Link,
 	Transform,
-	Alignment,
+	Alignment, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -61,6 +61,8 @@ const Edit = props => {
 
 	const derivedIcon = applyFilters( 'stackable.block-component.icon.default', defaultIcon )
 
+	useCssGenerator(attributes, <IconStyles.Content attributes={attributes} version={VERSION}/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -68,8 +70,13 @@ const Edit = props => {
 					<InspectorTabs />
 
 					<Alignment.InspectorControls />
-					<Icon.InspectorControls initialOpen={ true } hasMultiColor={ true } defaultValue={ derivedIcon } />
-					<BlockDiv.InspectorControls />
+					<Icon.InspectorControls
+						initialOpen={ true }
+						hasMultiColor={ true }
+						defaultValue={ derivedIcon }
+						disableColorPicker={true}
+					/>
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<Link.InspectorControls hasToggle={ true } isAdvancedTab={ true } />
 
 					<InspectorAdvancedControls>
@@ -106,7 +113,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(attributes, 'blockDiv', blockClassNames) }
 			>
 				<Link linkTrigger=".stk--inner-svg">
 					<Icon />

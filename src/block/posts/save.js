@@ -15,7 +15,7 @@ import {
 	CustomCSS,
 	getResponsiveClasses,
 	getAlignmentClasses,
-	getContentAlignmentClasses,
+	getContentAlignmentClasses, getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -56,28 +56,7 @@ export const Save = props => {
 		'stk-inner-blocks',
 	] )
 
-	return (
-		<BlockDiv.Content
-			className={ blockClassNames }
-			attributes={ attributes }
-			version={ props.version }
-			data-v={ props.attributes.version }
-		>
-			<PostsStyles.Content version={ version } attributes={ attributes } />
-			<CustomCSS.Content attributes={ attributes } />
-			<div className={ wrapperClassNames }>
-				<div className={ contentClassNames }>
-					{ generateRenderPostItem.save( {
-						...attributes,
-						className: className || attributes.className,
-					}, version ) }
-				</div>
-				<div className={ innerClassNames }>
-					<InnerBlocks.Content />
-				</div>
-			</div>
-		</BlockDiv.Content>
-	)
+	return ( <InnerBlocks.Content /> )
 }
 
 export default compose(

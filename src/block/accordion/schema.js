@@ -48,6 +48,32 @@ export const attributes = ( version = VERSION ) => {
 		versionDeprecated: '',
 	} )
 
+	attrObject.add( {
+		attributes: {
+			contentAlign: {
+				stkResponsive: true,
+				type: 'string',
+				default: '',
+			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2:{
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
+			},
+		},
+		versionAdded: '3.2.0',
+		versionDeprecated: '',
+	} )
+
 	attrObject.addDefaultValues( {
 		attributes: {
 			htmlTag: 'details',

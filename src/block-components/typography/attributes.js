@@ -1,11 +1,23 @@
 import { deprecatedAddAttributes } from './deprecated'
 
 const typographyAttributes = {
+	groupSize: {
+		type: 'string',
+		default: '',
+	},
+	groupClass: {
+		type: 'string',
+		default: '',
+	},
+	isCustomized: {
+		type: "boolean",
+		default: false
+	},
 	fontSize: {
 		stkResponsive: true,
 		type: 'number',
 		default: '',
-		stkUnits: 'px',
+		stkUnits: 'rem',
 	},
 	lineHeight: {
 		stkResponsive: true,
@@ -65,6 +77,7 @@ const typographyAttributes = {
 
 export const addAttributes = ( attrObject, selector = '.stk-content', options = {} ) => {
 	const {
+		groupSize='normal',
 		hasTextTag = true,
 		hasTextContent = true,
 		defaultTextTag = 'p',
@@ -86,11 +99,8 @@ export const addAttributes = ( attrObject, selector = '.stk-content', options = 
 					default: true,
 				},
 				text: {
-					source: 'html',
-					selector,
-					multiline,
+					type: 'string',
 					default: defaultText,
-					__unstableMultilineWrapperTags,
 				},
 			} : {} ),
 			...( hasTextTag ? {

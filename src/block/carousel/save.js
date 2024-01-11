@@ -29,7 +29,7 @@ import { compose } from '@wordpress/compose'
 import { SvgIcon } from '~stackable/components'
 import { defaultIconNext, defaultIconPrev } from './schema'
 
-export const Save = props => {
+const SaveOld = props => {
 	const {
 		attributes,
 	} = props
@@ -109,6 +109,8 @@ export const Save = props => {
 		</BlockDiv.Content>
 	)
 }
+
+export const Save = () => <InnerBlocks.Content />;
 
 export default compose(
 	withVersion( VERSION )

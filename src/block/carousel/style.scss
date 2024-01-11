@@ -84,6 +84,22 @@
 	li {
 		list-style: none;
 	}
+
+	&.stl-rounded .stk-block-carousel__dot:before {
+		border-radius: .25rem!important;
+	}
+	&.stl-rounded-lg .stk-block-carousel__dot:before {
+		border-radius: .5rem!important;
+	}
+	&.stl-rounded-xl .stk-block-carousel__dot:before {
+		border-radius: .75rem!important;
+	}
+	&.stl-rounded-2xl .stk-block-carousel__dot:before {
+		border-radius: 1rem!important;
+	}
+	&.stl-rounded-full .stk-block-carousel__dot:before {
+		border-radius: 9999px !important;
+	}
 }
 
 .stk-block-carousel.stk--is-fade {

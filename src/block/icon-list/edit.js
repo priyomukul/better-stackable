@@ -37,6 +37,8 @@ import {
 	Alignment,
 	getAlignmentClasses,
 	Transform,
+	useCssGenerator,
+	getGeneratedClasses
 } from '~stackable/block-components'
 
 /**
@@ -52,38 +54,38 @@ import { compose } from '@wordpress/compose'
 
 const listTypeOptions = [
 	{
-		label: __( 'Unordered List', i18n ),
+		label: __('Unordered List', i18n),
 		value: 'unordered',
 	},
 	{
-		label: __( 'Ordered List', i18n ),
+		label: __('Ordered List', i18n),
 		value: 'ordered',
 	},
 ]
 
 const listStyleTypeOptions = [
 	{
-		label: __( 'Number', i18n ),
+		label: __('Number', i18n),
 		value: 'decimal',
 	},
 	{
-		label: __( 'Padded Number', i18n ),
+		label: __('Padded Number', i18n),
 		value: 'decimal-leading-zero',
 	},
 	{
-		label: __( 'Lowercase Roman', i18n ),
+		label: __('Lowercase Roman', i18n),
 		value: 'lower-roman',
 	},
 	{
-		label: __( 'Uppercase Roman', i18n ),
+		label: __('Uppercase Roman', i18n),
 		value: 'upper-roman',
 	},
 	{
-		label: __( 'Lowercase Letters', i18n ),
+		label: __('Lowercase Letters', i18n),
 		value: 'lower-alpha',
 	},
 	{
-		label: __( 'Uppercase Letters', i18n ),
+		label: __('Uppercase Letters', i18n),
 		value: 'upper-alpha',
 	},
 ]
@@ -91,38 +93,38 @@ const listStyleTypeOptions = [
 const Edit = props => {
 	const textRef = useRef()
 	const typographyWrapperRef = useRef()
-	const [ isOpenIconSearch, setIsOpenIconSearch ] = useState( false )
-	const [ iconSearchAnchor, setIconSearchAnchor ] = useState( null )
-	const [ selectedIconCSSSelector, setSelectedIconCSSSelector ] = useState( null )
-	const [ selectedEvent, setSelectedEvent ] = useState( null )
+	const [isOpenIconSearch, setIsOpenIconSearch] = useState(false)
+	const [iconSearchAnchor, setIconSearchAnchor] = useState(null)
+	const [selectedIconCSSSelector, setSelectedIconCSSSelector] = useState(null)
+	const [selectedEvent, setSelectedEvent] = useState(null)
 	const {
 		isTyping,
-	} = useSelect( select => ( {
-		isTyping: select( 'core/block-editor' ).isTyping(),
-	} ) )
+	} = useSelect(select => ({
+		isTyping: select('core/block-editor').isTyping(),
+	}))
 
-	useEffect( () => {
+	useEffect(() => {
 		// Click handler to detect whether an icon is clicked, and open the icon
 		// picker for that icon.
 		const iconClickHandler = event => {
 			// If li isn't clicked, close the icon search.
-			setSelectedEvent( event )
-			if ( event.target.tagName !== 'LI' || event.target.parentElement.tagName !== 'UL' ) {
-				return setIsOpenIconSearch( false )
+			setSelectedEvent(event)
+			if (event.target.tagName !== 'LI' || event.target.parentElement.tagName !== 'UL') {
+				return setIsOpenIconSearch(false)
 			}
 
 			/**
 			 * Check if the click is on the icon.
 			 */
 
-			if ( event.offsetX <= 2 ) {
+			if (event.offsetX <= 2) {
 				// Get the selected li and show the icon picker on it.
-				const index = Array.from( event.target.parentElement.children ).indexOf( event.target ) + 1
+				const index = Array.from(event.target.parentElement.children).indexOf(event.target) + 1
 				const { currentlyOpenIndex } = event.target.parentElement
 
-				if ( currentlyOpenIndex && currentlyOpenIndex === index ) {
+				if (currentlyOpenIndex && currentlyOpenIndex === index) {
 					event.target.parentElement.currentlyOpenIndex = undefined
-					return setIsOpenIconSearch( false )
+					return setIsOpenIconSearch(false)
 				}
 
 				event.target.parentElement.currentlyOpenIndex = index
@@ -134,9 +136,9 @@ const Edit = props => {
 				 */
 				let traverseToRichText = event.target
 				let found = null
-				while ( traverseToRichText.tagName !== 'DIV' ) {
-					for ( let i = 0; i < Array.from( traverseToRichText.parentElement.childNodes ).length; i++ ) {
-						if ( traverseToRichText.parentElement.childNodes[ i ] === traverseToRichText && found === null ) {
+				while (traverseToRichText.tagName !== 'DIV') {
+					for (let i = 0; i < Array.from(traverseToRichText.parentElement.childNodes).length; i++) {
+						if (traverseToRichText.parentElement.childNodes[i] === traverseToRichText && found === null) {
 							found = i + 1
 							break
 						}
@@ -144,20 +146,20 @@ const Edit = props => {
 					traverseToRichText = traverseToRichText.parentElement
 				}
 
-				setSelectedIconCSSSelector( `ul li:nth-child(${ found })` )
-				setIconSearchAnchor( event.target )
-				return setIsOpenIconSearch( true )
+				setSelectedIconCSSSelector(`ul li:nth-child(${found})`)
+				setIconSearchAnchor(event.target)
+				return setIsOpenIconSearch(true)
 			}
 
 			// Hide the icon picker.
 			event.target.parentElement.currentlyOpenIndex = undefined
-			setIconSearchAnchor( null )
-			return setIsOpenIconSearch( false )
+			setIconSearchAnchor(null)
+			return setIsOpenIconSearch(false)
 		}
 
-		textRef.current.addEventListener( 'click', iconClickHandler )
-		return () => textRef.current?.removeEventListener( 'click', iconClickHandler )
-	}, [ setSelectedEvent, setSelectedIconCSSSelector, setIconSearchAnchor, setIsOpenIconSearch, textRef.current ] )
+		textRef.current.addEventListener('click', iconClickHandler)
+		return () => textRef.current?.removeEventListener('click', iconClickHandler)
+	}, [setSelectedEvent, setSelectedIconCSSSelector, setIconSearchAnchor, setIsOpenIconSearch, textRef.current])
 
 	const {
 		clientId,
@@ -169,47 +171,49 @@ const Edit = props => {
 		mergeBlocks,
 	} = props
 
-	useGeneratedCss( props.attributes )
+	useGeneratedCss(props.attributes)
 
 	const { ordered } = attributes
 	const tagName = ordered ? 'ol' : 'ul'
 
-	const textClasses = getTypographyClasses( attributes )
-	const blockAlignmentClass = getAlignmentClasses( attributes )
+	const textClasses = getTypographyClasses(attributes)
+	const blockAlignmentClass = getAlignmentClasses(attributes)
 
-	const blockClassNames = classnames( [
+	const blockClassNames = classnames([
 		className,
 		'stk-block-icon-list',
 		blockAlignmentClass,
 		textClasses,
-	] )
+	])
 
-	const controls = createIconListControls( {
+	const controls = createIconListControls({
 		isSelected, tagName,
-	} )
+	})
+
+	useCssGenerator(attributes, <IconListStyles.Content version={VERSION} attributes={attributes} />);
 
 	return (
 		<>
-			{ isSelected && (
+			{isSelected && (
 				<>
 					<InspectorTabs />
 
 					<InspectorStyleControls>
 						<PanelAdvancedSettings
-							title={ __( 'General', i18n ) }
-							initialOpen={ true }
+							title={__('General', i18n)}
+							initialOpen={true}
 							id="general"
 						>
 							<AdvancedSelectControl
-								label={ __( 'List Type', i18n ) }
-								options={ listTypeOptions }
-								value={ ordered ? 'ordered' : 'unordered' }
-								onChange={ v => setAttributes( { ordered: v === 'ordered' } ) }
+								label={__('List Type', i18n)}
+								options={listTypeOptions}
+								value={ordered ? 'ordered' : 'unordered'}
+								onChange={v => setAttributes({ ordered: v === 'ordered' })}
 								default="unordered"
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Columns', i18n ) }
+								label={__('Columns', i18n)}
 								attribute="columns"
 								min="1"
 								sliderMax="3"
@@ -219,7 +223,7 @@ const Edit = props => {
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Column Gap', i18n ) }
+								label={__('Column Gap', i18n)}
 								attribute="columnGap"
 								min="0"
 								sliderMax="50"
@@ -227,7 +231,7 @@ const Edit = props => {
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Row Gap', i18n ) }
+								label={__('Row Gap', i18n)}
 								attribute="rowGap"
 								min="0"
 								sliderMax="50"
@@ -235,7 +239,7 @@ const Edit = props => {
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Icon Gap', i18n ) }
+								label={__('Icon Gap', i18n)}
 								attribute="iconGap"
 								min="0"
 								sliderMax="20"
@@ -243,7 +247,7 @@ const Edit = props => {
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Indentation', i18n ) }
+								label={__('Indentation', i18n)}
 								attribute="indentation"
 								min="0"
 								sliderMax="50"
@@ -251,7 +255,7 @@ const Edit = props => {
 								placeholder=""
 							/>
 							<AlignButtonsControl
-								label={ sprintf( __( '%s Alignment', i18n ), __( 'List', i18n ) ) }
+								label={sprintf(__('%s Alignment', i18n), __('List', i18n))}
 								attribute="listAlignment"
 								responsive="all"
 							/>
@@ -260,75 +264,77 @@ const Edit = props => {
 
 					<InspectorStyleControls>
 						<PanelAdvancedSettings
-							title={ __( 'Icons & Numbers', i18n ) }
-							initialOpen={ false }
+							title={__('Icons & Numbers', i18n)}
+							initialOpen={false}
 							id="icon-and-markers"
 						>
 							<IconControl
-								label={ __( 'Icon', i18n ) }
-								value={ attributes.icon }
-								onChange={ icon => {
+								label={__('Icon', i18n)}
+								value={attributes.icon}
+								onChange={icon => {
 									// Reset custom individual icons.
-									setAttributes( { icon, icons: [] } )
-								} }
-								defaultValue={ DEFAULT_SVG }
+									setAttributes({ icon, icons: [] })
+								}}
+								defaultValue={DEFAULT_SVG}
 							/>
 
 							<AdvancedSelectControl
-								label={ __( 'List Type', i18n ) }
+								label={__('List Type', i18n)}
 								attribute="listType"
-								options={ listStyleTypeOptions }
+								options={listStyleTypeOptions}
 							/>
 
 							<ColorPaletteControl
-								label={ __( 'Color', i18n ) }
+								label={__('Color', i18n)}
 								attribute="markerColor"
 								hover="all"
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Icon / Number Size', i18n ) }
+								label={__('Icon / Number Size', i18n)}
 								attribute="iconSize"
-								min={ 0 }
-								max={ 5 }
-								step={ 0.1 }
-								allowReset={ true }
+								min={0}
+								max={5}
+								step={0.1}
+								allowReset={true}
 								responsive="all"
 								placeholder="1"
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Icon Opacity', i18n ) }
+								label={__('Icon Opacity', i18n)}
 								attribute="iconOpacity"
-								min={ 0 }
-								max={ 1 }
-								step={ 0.1 }
-								allowReset={ true }
+								min={0}
+								max={1}
+								step={0.1}
+								allowReset={true}
 								placeholder="1.0"
 								hover="all"
 							/>
 
 							<AdvancedRangeControl
-								label={ __( 'Icon Rotation', i18n ) }
+								label={__('Icon Rotation', i18n)}
 								attribute="iconRotation"
-								min={ 0 }
-								max={ 360 }
-								allowReset={ true }
+								min={0}
+								max={360}
+								allowReset={true}
 								placeholder="0"
 							/>
 						</PanelAdvancedSettings>
 					</InspectorStyleControls>
 
 					<Typography.InspectorControls
-						{ ...props }
-						isMultiline={ true }
-						initialOpen={ false }
-						hasTextTag={ false }
-						hasTextContent={ false }
+						{...props}
+						isMultiline={true}
+						initialOpen={false}
+						hasTextTag={false}
+						hasTextContent={false}
+						hasOptions={true}
+						disableColorPicker={true}
 					/>
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -337,76 +343,77 @@ const Edit = props => {
 					<Responsive.InspectorControls />
 					<ConditionalDisplay.InspectorControls />
 				</>
-			) }
+			)}
 
 			<IconListStyles
-				version={ VERSION }
-				blockState={ props.blockState }
-				clientId={ clientId }
+				version={VERSION}
+				blockState={props.blockState}
+				clientId={clientId}
 			/>
 			<CustomCSS mainBlockClass="stk-block-icon-list" />
 
 			<BlockDiv
-				blockHoverClass={ props.blockHoverClass }
-				clientId={ props.clientId }
-				attributes={ props.attributes }
-				className={ blockClassNames }
+				blockHoverClass={props.blockHoverClass}
+				clientId={props.clientId}
+				attributes={props.attributes}
+				className={blockClassNames + ' ' + getGeneratedClasses(attributes, 'blockDiv')}
 			>
-				{ /* eslint-disable-next-line */ }
+				{ /* eslint-disable-next-line */}
 				<div
-					ref={ typographyWrapperRef }
-					onClick={ e => {
+					ref={typographyWrapperRef}
+					onClick={e => {
 						// When the div wrapper is clicked, pass the focus to the list.
-						if ( e.target === typographyWrapperRef.current ) {
+						if (e.target === typographyWrapperRef.current) {
 							textRef.current.focus()
 							const range = document.createRange()
-							range.selectNodeContents( textRef.current )
-							range.collapse( false )
+							range.selectNodeContents(textRef.current)
+							range.collapse(false)
 
 							const selection = window.getSelection() // eslint-disable-line
 							selection.removeAllRanges()
-							selection.addRange( range )
+							selection.addRange(range)
 						}
-					} }
+					}}
 				>
 					<Typography
-						tagName={ tagName }
+						tagName={tagName}
 						multiline="li"
-						onRemove={ onRemove }
-						onMerge={ mergeBlocks }
-						ref={ textRef }
+						onRemove={onRemove}
+						onMerge={mergeBlocks}
+						ref={textRef}
+						className={getGeneratedClasses(attributes, 'element')}
 					>
-						{ controls }
+						{controls}
 					</Typography>
-					{ ! isTyping && isSelected && isOpenIconSearch && (
+					{!isTyping && isSelected && isOpenIconSearch && (
 						<IconSearchPopover
-							__deprecatedAnchorRef={ iconSearchAnchor }
+							__deprecatedAnchorRef={iconSearchAnchor}
 							__deprecatedPosition="bottom left"
-							__hasPopover={ true }
-							onClose={ () => {
-								if ( selectedEvent ) {
+							__hasPopover={true}
+							onClose={() => {
+								if (selectedEvent) {
 									selectedEvent.target.parentElement.currentlyOpenIndex = undefined
 								}
-								setIsOpenIconSearch( false )
-							} }
-							onChange={ icon => {
+								setIsOpenIconSearch(false)
+							}}
+							onChange={icon => {
 								const icons = { ...props.attributes.icons }
-								if ( ! icon ) {
+								if (!icon) {
 									// Remove the icon inside the icons.
-									delete icons[ selectedIconCSSSelector ]
+									delete icons[selectedIconCSSSelector]
 								} else {
-									icons[ selectedIconCSSSelector ] = icon
+									icons[selectedIconCSSSelector] = icon
 								}
 
-								setAttributes( {
+								setAttributes({
 									icons: { ...icons },
-								} )
-							} }
+								})
+							}}
 						/>
-					) }
+					)}
 				</div>
 			</BlockDiv>
-			{ props.isHovered && <MarginBottom /> }
+			{props.isHovered && <MarginBottom />}
 		</>
 	)
 }
@@ -415,4 +422,4 @@ export default compose(
 	withBlockWrapperIsHovered,
 	withQueryLoopContext,
 	withBlockAttributeContext,
-)( Edit )
+)(Edit)

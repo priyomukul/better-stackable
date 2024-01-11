@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Stackable - Gutenberg Blocks
+ * Plugin Name: Stellar Blocks - Gutenberg Blocks
  * Plugin URI: https://wpstackable.com
  * Description: An Amazing Block Library That Lets You Reimagine the Way You Use the WordPress Block Editor (Gutenberg).
  * Author: Gambit Technologies, Inc
@@ -209,6 +209,43 @@ require_once( plugin_dir_path( __FILE__ ) . 'src/global-settings.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'src/custom-block-styles.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'src/css-optimize.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'src/compatibility/index.php' );
+
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/ClassBuilderStrategyInterface.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/BackgroundClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/LightboxClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/MarginClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/MarginClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/ResponsiveClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/TextAlignmentClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/UniqueClassBuilder.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/InnerBlocksWrapperClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/ContainerClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/SeparatorClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/RowInnerBlocksWrapperClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/ContentAlignmentClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/BlockWidthClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/RowClassBuilder.php');
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/Builders/TypographyClassBuilder.php');
+
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/ClassManager/ClassManager.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/BlockRendererInterface.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/BlockRenderer.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'src/render/BaseBlockRenderer.php' );
+
+/**
+ * This is for dynamically loading Renderer PHP Files.
+ */
+spl_autoload_register( function( $class ) {
+	if( str_starts_with( $class, 'StellarBlocks\\Renderer\\' ) ) {
+		$class = explode( '\\', $class );
+		$class = count($class) == 3 ? end($class) : implode( DIRECTORY_SEPARATOR, array_slice( $class, 2 ) );
+
+		require_once( plugin_dir_path( __FILE__ ) . "src/render/$class.php" );
+	}
+} );
+
+
+
 if ( ! is_admin() ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'src/lightbox/index.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'src/block/accordion/index.php' );

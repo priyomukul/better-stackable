@@ -29,7 +29,7 @@ import {
 	EffectsAnimations,
 	ConditionalDisplay,
 	MarginBottom,
-	Transform,
+	Transform, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 import {
 	useBlockAttributesContext, useBlockContext, useBlockSetAttributesContext,
@@ -123,6 +123,8 @@ const Edit = props => {
 		'stk--is-open': isOpen, // This opens the accordion in the editor.
 	} )
 
+	useCssGenerator(props.attributes, <BlockStyles.Content attributes={props.attributes} version={VERSION}/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -156,7 +158,7 @@ const Edit = props => {
 					</InspectorStyleControls>
 
 					<Alignment.InspectorControls />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true}/>
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -182,7 +184,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses(props.attributes, 'blockDiv', blockClassNames) }
 				renderHtmlTag={ false }
 				enableVariationPicker={ true }
 			>

@@ -10,5 +10,6 @@
 		"HR"
 	],
 	"textdomain": "stackable-ultimate-gutenberg-blocks",
-	"stk-type": "special"
+	"stk-type": "special",
+	"render": "file:./render.php"
 }

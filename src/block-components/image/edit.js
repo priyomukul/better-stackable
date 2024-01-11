@@ -23,10 +23,12 @@ import {
 	AdvancedTextControl,
 } from '~stackable/components'
 import {
+	useAttributeEditHandlers,
 	useBlockAttributesContext,
 	useBlockSetAttributesContext,
 } from '~stackable/hooks'
-
+import ConditionalControl from "~stackable/components/conditional-control";
+import {BORDER_RADIUS} from "~stackable/config/constants";
 /**
  * WordPress dependencies
  */
@@ -70,6 +72,8 @@ const Controls = props => {
 			imageExternalUrl: attributes.imageExternalUrl,
 		}
 	} )
+	
+	const { getAttributes } = useAttributeEditHandlers()
 	const setAttributes = useBlockSetAttributesContext()
 
 	// Get the image size urls.
@@ -253,19 +257,29 @@ const Controls = props => {
 			) }
 
 			{ props.hasBorderRadius &&
-				<AdvancedRangeControl
-					label={ __( 'Border Radius', i18n ) }
-					attribute="imageBorderRadius"
-					min="0"
-					sliderMax={ borderRadiusSliderMax }
-					placeholder="0"
-					defaultValue={ 0 }
-					allowReset={ true }
-					helpTooltip={ {
-						video: 'image-border-radius',
-						description: __( 'Adjusts the radius of image corners to make them more rounded', i18n ),
-					} }
-				/>
+				<ConditionalControl
+					options={BORDER_RADIUS}
+					isEnabled={props.hasOptions}
+					label={__('Border Radius', i18n)}
+					attributeName="imageBorderRadius"
+					saveAttr={getAttributes().generatedClasses}
+					saveAttrName={'generatedClasses'}
+				>
+					<AdvancedRangeControl
+						label={ __( 'Border Radius', i18n ) }
+						attribute="imageBorderRadius"
+						min="0"
+						sliderMax={ borderRadiusSliderMax }
+						placeholder="0"
+						defaultValue={ 0 }
+						allowReset={ true }
+						helpTooltip={ {
+							video: 'image-border-radius',
+							description: __( 'Adjusts the radius of image corners to make them more rounded', i18n ),
+						} }
+					/>
+				</ConditionalControl>
+
 			}
 
 			<ControlSeparator />
@@ -418,6 +432,8 @@ Controls.defaultProps = {
 
 	hasBorderRadius: true,
 	hasShape: true,
+	hasOptions: false,
+	disableColorPicker: false
 }
 
 export const Edit = props => {

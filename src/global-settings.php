@@ -273,6 +273,47 @@ if ( ! class_exists( 'Stackable_Global_Settings' ) ) {
 					'default' => '',
 				)
 			);
+
+			$this->insert_global_colors();
+		}
+
+	    public function insert_global_colors(  ) {
+			$defaultColors = [
+				[
+					'name' => 'Primary',
+					'slug' => 'stk-global-color-1223',
+					'color' => '#072AC8',
+					'rgb'  => '7, 42, 200'
+				],
+				[
+					'name' => 'Secondary',
+					'slug' => 'stk-global-color-2345',
+					'color' => '#A2D6F9',
+					'rgb'  => '162, 214, 249'
+				],
+				[
+					'name' => 'Button color',
+					'slug' => 'stk-global-color-3245',
+					'color' => '#1E96FC',
+					'rgb'  => '30, 150, 252'
+				],
+				[
+					'name' => 'Heading Color',
+					'slug' => 'stk-global-color-4345',
+					'color' => '#FFBA00',
+					'rgb'  => '255, 186, 0'
+				]
+			];
+		    $inserted = get_option('stl_global_color_inserted');
+			if(!$inserted){
+				$settings = get_option('stackable_global_colors');
+				if(empty($settings)){
+					$settings = [];
+				}
+				$settings[0] = $defaultColors;
+				update_option('stackable_global_colors', $settings);
+				update_option('stl_global_color_inserted', true);
+			}
 		}
 
 		/**

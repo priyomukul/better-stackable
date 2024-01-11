@@ -1,6 +1,13 @@
 @import "common";
 
-.stk-block-hero__content > .stk-inner-blocks.stk--column-flex:not(.stk--block-horizontal-flex) {
-	justify-content: center;
-	align-items: center;
+// .stk-block-hero__content > .stk-inner-blocks.stk--column-flex:not(.stk--block-horizontal-flex) {
+// 	justify-content: center;
+// 	align-items: center;
+// }
+
+.stk-block-hero__content.stk-container:not(.stk--no-background) {
+	background-color: cssvar(container-background-color);
+	border-radius: cssvar(container-border-radius);
+	box-shadow: cssvar(container-box-shadow);
+	color: cssvar(container-color);
 }

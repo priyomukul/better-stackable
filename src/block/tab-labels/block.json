@@ -10,5 +10,6 @@
 		"stackable/tabs"
 	],
 	"textdomain": "stackable-ultimate-gutenberg-blocks",
-	"stk-type": "hidden"
+	"stk-type": "hidden",
+	"render": "file:./render.php"
 }

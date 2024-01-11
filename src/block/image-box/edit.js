@@ -35,6 +35,8 @@ import {
 	MarginBottom,
 	Transform,
 	getBlockOrientation,
+	useCssGenerator,
+	getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -79,13 +81,18 @@ const Edit = props => {
 	const lastBlockName = last( innerBlocks )?.name
 	const renderAppender = hasInnerBlocks ? ( [ 'stackable/text', 'core/paragraph' ].includes( lastBlockName ) ? () => <></> : InnerBlocks.DefaultBlockAppender ) : InnerBlocks.ButtonBlockAppender
 
+	useCssGenerator( props.attributes, <ImageBoxStyles.Content 
+		version={VERSION}
+		attributes={props.attributes}
+	/> )
+
 	return (
 		<Fragment>
 
 			<InspectorTabs />
 
 			<Alignment.InspectorControls />
-			<BlockDiv.InspectorControls />
+			<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 			<BlockLink.InspectorControls />
 			<Advanced.InspectorControls />
 			<Transform.InspectorControls />
@@ -110,7 +117,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 				enableVariationPicker={ true }
 			>
 				<div className={ contentClassNames }>

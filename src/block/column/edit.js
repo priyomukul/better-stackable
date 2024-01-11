@@ -37,7 +37,7 @@ import {
 	BlockLink,
 	ContainerDiv,
 	Transform,
-	getBlockOrientation,
+	getBlockOrientation, useCssGenerator, getGeneratedClasses,
 } from '~stackable/block-components'
 
 /**
@@ -87,6 +87,8 @@ const Edit = props => {
 		{ 'stk--align-last-block-to-bottom': props.attributes.alignLastBlockToBottom },
 	] )
 
+	useCssGenerator(props.attributes, <BlockStyles.Content version={VERSION} attributes={props.attributes}/>)
+
 	return (
 		<>
 			{ isSelected && (
@@ -116,7 +118,7 @@ const Edit = props => {
 					</InspectorLayoutControls>
 
 					<Alignment.InspectorControls hasContainerSize={ true } hasColumnAlignment={ true } />
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls  hasOptions={true} disableColorPicker={true}/>
 					<BlockLink.InspectorControls />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
@@ -134,7 +136,7 @@ const Edit = props => {
 						/>
 					</InspectorLayoutControls>
 
-					<ContainerDiv.InspectorControls sizeSelector=".stk-block-content" />
+					<ContainerDiv.InspectorControls sizeSelector=".stk-block-content"  hasOptions={true} disableColorPicker={true}/>
 				</>
 			) }
 
@@ -151,10 +153,10 @@ const Edit = props => {
 					blockHoverClass={ props.blockHoverClass }
 					clientId={ props.clientId }
 					attributes={ props.attributes }
-					className={ blockClassNames }
+					className={ getGeneratedClasses(props.attributes,'blockDiv', blockClassNames) }
 					data-v={ props.attributes.version || 4 }
 				>
-					<ContainerDiv className={ contentClassNames }>
+					<ContainerDiv className={ getGeneratedClasses(props.attributes,'container', contentClassNames) }>
 						<InnerBlocks
 							allowedBlocks={ ALLOWED_INNER_BLOCKS }
 							templateLock={ props.attributes.templateLock || false }

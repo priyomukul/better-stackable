@@ -30,6 +30,8 @@ import {
 	EffectsAnimations,
 	ConditionalDisplay,
 	Transform,
+	getGeneratedClasses,
+	useCssGenerator,
 } from '~stackable/block-components'
 import { getVideoProviderFromURL, urlIsVideo } from '~stackable/util'
 import {
@@ -89,6 +91,11 @@ const Edit = props => {
 		const regexp = /(?:^.*\.(mp4|avi|wmv|mov|flv|mkv|webm|vob|ogv|m4v|3gp|3g2|mpeg|mpg|m2v|m4v|svi|3gpp|3gpp2|mxf|roq|nsv|flv|f4v|f4p|f4a|f4b)$)/im
 		return regexp.test( link )
 	}
+
+	useCssGenerator( props.attributes, <IconLabelStyles.Content
+		attributes={props.attributes}
+		version={VERSION}
+	/>);
 
 	return (
 		<>
@@ -152,7 +159,7 @@ const Edit = props => {
 						</PanelAdvancedSettings>
 
 					</InspectorStyleControls>
-					<BlockDiv.InspectorControls />
+					<BlockDiv.InspectorControls hasOptions={true} disableColorPicker={true} />
 					<Advanced.InspectorControls />
 					<Transform.InspectorControls />
 					<EffectsAnimations.InspectorControls />
@@ -178,7 +185,7 @@ const Edit = props => {
 				blockHoverClass={ props.blockHoverClass }
 				clientId={ props.clientId }
 				attributes={ props.attributes }
-				className={ blockClassNames }
+				className={ getGeneratedClasses( props.attributes, 'blockDiv', blockClassNames ) }
 			>
 				<div className={ contentClassNames }>
 					<InnerBlocks

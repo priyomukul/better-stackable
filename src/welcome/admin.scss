@@ -231,17 +231,6 @@ body[class*="page_stk-"] {
 .s-icon-kit-settings-field > p {
 	margin-left: calc(var(--label-width) + 40px);
 }
-.s-icon-settings-fa-version .ugb-admin-setting__field {
-	margin-left: 40px;
-}
-.s-icon-settings-fa-pro-version .ugb-admin-setting__field p {
-	margin-left: 20px;
-}
-
-.s-icon-settings-fa-pro-version {
-	display: none;
-}
-
 .s-settings-error {
 	color: #ff5a7f;
 }
@@ -744,3 +733,29 @@ body.toplevel_page_stk-custom-fields {
 @import "news";
 @import "getting-started";
 @import "freemius";
+
+.stl-color-settings{
+	.ugb-global-settings-color-picker{
+		.components-base-control__field{
+			display: block;
+		}
+		.ugb-global-settings-color-picker__add-button{
+			margin-bottom: 20px;
+			border: 1px solid #ddd;
+			&:hover{
+				border-color: var(--wp-components-color-accent,var(--wp-admin-theme-color,#3858e9))
+			}
+		}
+	}
+	.stl-settings-color-picker{
+		max-width: 300px;
+		.components-dropdown{
+			.components-button{
+				width: 100%;
+				input{
+					flex-grow: 1;
+				}
+			}
+		}
+	}
+}

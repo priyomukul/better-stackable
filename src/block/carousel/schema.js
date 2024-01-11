@@ -218,6 +218,34 @@ export const attributes = ( version = VERSION ) => {
 				type: 'string',
 				default: '',
 			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					},
+					arrowBorderRadius: {
+						type: 'arrows',
+						desktop: {
+							value: 'full',
+							class: 'stl-rounded-full'
+						},
+					},
+					dotsBorderRadius: {
+						type: 'dots',
+						desktop: {
+							value: 'full',
+							class: 'stl-rounded-full'
+						},
+					},
+				},
+			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',

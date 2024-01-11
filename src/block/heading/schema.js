@@ -18,25 +18,25 @@ import {
 	Transform,
 } from '~stackable/block-components'
 
-export const attributes = ( version = VERSION ) => {
+export const attributes = (version = VERSION) => {
 	const attrObject = new AttributeObject()
 
-	Alignment.addAttributes( attrObject )
-	BlockDiv.addAttributes( attrObject )
-	Style.addAttributes( attrObject )
-	EffectsAnimations.addAttributes( attrObject )
-	CustomAttributes.addAttributes( attrObject )
-	CustomCSS.addAttributes( attrObject )
-	MarginBottom.addAttributes( attrObject )
-	Responsive.addAttributes( attrObject )
-	ConditionalDisplay.addAttributes( attrObject )
-	Advanced.addAttributes( attrObject )
-	Transform.addAttributes( attrObject )
-	Typography.addAttributes( attrObject, '.stk-block-heading__text', {
+	Alignment.addAttributes(attrObject)
+	BlockDiv.addAttributes(attrObject)
+	Style.addAttributes(attrObject)
+	EffectsAnimations.addAttributes(attrObject)
+	CustomAttributes.addAttributes(attrObject)
+	CustomCSS.addAttributes(attrObject)
+	MarginBottom.addAttributes(attrObject)
+	Responsive.addAttributes(attrObject)
+	ConditionalDisplay.addAttributes(attrObject)
+	Advanced.addAttributes(attrObject)
+	Transform.addAttributes(attrObject)
+	Typography.addAttributes(attrObject, '.stk-block-heading__text', {
 		defaultTextTag: 'h2',
-	} )
+	})
 
-	attrObject.add( {
+	attrObject.add({
 		attributes: {
 			showTopLine: {
 				type: 'boolean',
@@ -103,17 +103,35 @@ export const attributes = ( version = VERSION ) => {
 			// We need to put the anchor here because the deprecation will fail
 			// without it (Gutenberg bug).
 			anchor: {
-				attribute: 'id',
-				selector: '*',
-				source: 'attribute',
 				type: 'string',
+			},
+			generatedClasses: {
+				type: 'object',
+				default: {
+					fontSize: {
+						type: 'element',
+						desktop: {
+							value: 'xl',
+							class: 'stl-text-xl'
+						}
+					},
+					blockBorderRadius2: {
+						type: 'blockDiv'
+					},
+					blockPadding: {
+						type: 'blockDiv',
+					},
+					blockMargin: {
+						type: 'blockDiv',
+					}
+				},
 			},
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '',
-	} )
+	})
 
-	attrObject.add( {
+	attrObject.add({
 		attributes: {
 			textRemoveTextMargins: {
 				type: 'boolean',
@@ -122,9 +140,9 @@ export const attributes = ( version = VERSION ) => {
 		},
 		versionAdded: '3.0.0',
 		versionDeprecated: '3.6.2',
-	} )
+	})
 
-	return attrObject.getMerged( version )
+	return attrObject.getMerged(version)
 }
 
-export default attributes( VERSION )
+export default attributes(VERSION)
